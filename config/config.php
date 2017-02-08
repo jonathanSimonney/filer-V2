@@ -9,6 +9,9 @@ $routes = [
     'logout'   => 'user',
 ];
 
-require('config/private.php');
-
-
+$db_config = [
+    'name' => 'mvc',
+    'host' => 'localhost',
+    'user' => 'mvc',
+    'pass' => 'password'
+];

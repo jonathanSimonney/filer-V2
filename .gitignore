@@ -1,4 +1,5 @@
 /uploads/*
 !/uploads/.gitkeep
-.idea
-config/private.php
+.DS_STORE
+*~
+#*#
