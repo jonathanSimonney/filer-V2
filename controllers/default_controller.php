@@ -2,27 +2,20 @@
 
 require_once('model/user.php');
 
-function home_action()
-{
-    if (!empty($_SESSION['user_id']))
-    {
-        $user = get_user_by_id($_SESSION['user_id']);
-        //$user = get_user_by_id(1);
-        $username = $user['username'];
+function home_action(){
+    if (!empty($_SESSION['user_id'])) {
         require('views/home.php');
     }
-    else {
+    else{
         header('Location: ?action=login');
         exit(0);
     }
 }
 
-function about_action()
-{
+function about_action(){
     require('views/about.html');
 }
 
-function contact_action()
-{
+function contact_action(){
     require('views/contact.html');
 }

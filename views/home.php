@@ -1,11 +1,10 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title>Home page</title>
-        <link rel="stylesheet" href="web/style.css">
-    </head>
+<?php require('views/inc/head.html');
+?>
     <body>
-        Hello <?php echo $username ?>, this is a template
+        <?php
+            $link = '<a href="?action=logout"><i class="fa fa-power-off" aria-hidden="true"></i>log&nbsp;out</a>';
+            require('views/inc/header.php');
+        ?>
+        Hello toto, this is a template.
     </body>
-</html>
+

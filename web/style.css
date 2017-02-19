@@ -1,4 +1,109 @@
-body {
-    background-color: #BBBBBB;
-    font-family: "Comic Sans MS";
+h1{
+    margin : auto;
+}
+
+a{
+    text-decoration: none;
+    color: black;
+}
+
+a:not(.download){
+    font-size: 40px;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+form input{
+    width: 100%;
+}
+
+.message{
+    font-weight: bold;
+}
+
+.green{
+    color: green;
+}
+
+.red{
+    color: red;
+}
+
+.blueBackground{
+    background-color: #34495e;
+}
+
+.toHide{
+    opacity: 0;
+    display: none;
+}
+
+body{
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.atExtremityContent{
+    display: flex;
+    justify-content: space-between;
+}
+
+.centeringDiv{
+    width: 100%;
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+    display: flex;
+    justify-content: center;
+}
+
+.centeringDiv>div{
+    width: 70%;
+}
+
+.centeringDiv:not(.header)>div{
+    padding-bottom: 100px;
+}
+
+.listFilesUser{
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-content: space-between;
+}
+
+.listFilesUser>div{
+    width: 200px;
+    height: 150px;
+    margin-top: 40px;
+    margin-left: 30px;
+}
+
+.notForUser{
+    display: none;
+    opacity: 0;/*I'D ALMOST CONSIDER USING !important! for this, so,
+	DO NOT ALLOW USER TO SEE THIS BLOCK (obviously, he can see it through html,
+	but there is security against this*/
+}
+
+/*TODO : change animation (also in js to change name)*/
+@keyframes appearingSlowly{
+    0%{opacity: 0;
+        display: block;}
+    100%{opacity: 1;}
+}
+
+.appearingSlowly{
+    animation-name: appearingSlowly;
+    animation-duration: 1s;
+    opacity: 1;
+    display: block;
 }
