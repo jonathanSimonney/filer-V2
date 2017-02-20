@@ -9,6 +9,4 @@ $routes = [
     'logout'   => 'user',
 ];
 
-require('config/private.php');
-
-
+require('var/config/private.php');

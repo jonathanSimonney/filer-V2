@@ -29,7 +29,7 @@ function user_check_register($data){
 }
 
 function user_hash($pass){
-    $hash = password_hash($pass, PASSWORD_BCRYPT);//todo : generate RANDOM hash and stock them into db (harder to break...)
+    $hash = password_hash($pass, PASSWORD_BCRYPT);
     return $hash;
 }
 
@@ -45,8 +45,10 @@ function user_register($data, $arrayFields){
         $user[$field] = $data[$field];
     }
     db_insert('users', $user);
+    $user = get_what_how($data['username'], 'username', 'users');
+    $_SESSION['currentUser'] = $user;
 
-    mkdir('uploads/'.htmlspecialchars($user['username']));//create folder for user file
+    mkdir('web/uploads/'.$user['id']);//create folder for user file
 }
 
 function user_check_login($data){
