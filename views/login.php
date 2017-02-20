@@ -2,8 +2,9 @@
 ?>
     <body>
         <?php
-            $link = '<a href="?action=logout"><i class="fa fa-power-off" aria-hidden="true"></i>sign&nbsp;in</a>';
+            $link = '<a href="?action=register"><i class="fa fa-sign-in" aria-hidden="true"></i>register</a>';
             require('views/inc/header.php');
         ?>
         Hello toto, this is a template.
     </body>
+</html>

@@ -2,8 +2,7 @@
 
 $dbh = null;
 
-function connect_to_db()
-{
+function connect_to_db(){
     global $db_config;
     $dsn = 'mysql:dbname='.$db_config['name'].';host='.$db_config['host'];
     $user = $db_config['user'];
@@ -11,32 +10,33 @@ function connect_to_db()
     
     try {
         $dbh = new PDO($dsn, $user, $password);
-    } catch (PDOException $e) {
+    }
+
+    catch (PDOException $e){
         echo 'Connexion échouée : ' . $e->getMessage();
     }
     
     return $dbh;
 }
 
-function get_dbh()
-{
+function get_dbh(){
     global $dbh;
-    if ($dbh === null)
+    if ($dbh === null){
         $dbh = connect_to_db();
+    }
     return $dbh;
 }
 
-function db_insert($table, $data = [])
-{
+function db_insert($table, $data = []){
     $dbh = get_dbh();
     $query = 'INSERT INTO `' . $table . '` VALUES ("",';
     $first = true;
-    foreach ($data AS $k => $value)
-    {
-        if (!$first)
+    foreach ($data AS $k => $value) {
+        if (!$first){
             $query .= ', ';
-        else
+        }else{
             $first = false;
+        }
         $query .= ':'.$k;
     }
     $query .= ')';
@@ -45,16 +45,14 @@ function db_insert($table, $data = [])
     return true;
 }
 
-function find_one($query)
-{
+function find_one($query){
     $dbh = get_dbh();
     $data = $dbh->query($query, PDO::FETCH_ASSOC);
     $result = $data->fetch();
     return $result;
 }
 
-function find_one_secure($query, $data = [])
-{
+function find_one_secure($query, $data = []){
     $dbh = get_dbh();
     $sth = $dbh->prepare($query);
     $sth->execute($data);
@@ -62,16 +60,14 @@ function find_one_secure($query, $data = [])
     return $result;
 }
 
-function find_all($query)
-{
+function find_all($query){
     $dbh = get_dbh();
     $data = $dbh->query($query, PDO::FETCH_ASSOC);
     $result = $data->fetchAll();
     return $result;
 }
 
-function find_all_secure($query, $data = [])
-{
+function find_all_secure($query, $data = []){
     $dbh = get_dbh();
     $sth = $dbh->prepare($query);
     $sth->execute($data);
@@ -79,3 +75,8 @@ function find_all_secure($query, $data = [])
     return $result;
 }
 
+function get_what_how($needle, $needleColumn, $needleTable){
+    $data = find_one_secure('SELECT * FROM `'.$needleTable.'` WHERE `'.$needleColumn.'` = :needle',
+        ['needle' => $needle]);
+    return $data;
+}
