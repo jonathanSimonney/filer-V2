@@ -10,7 +10,7 @@ function asynchronousTreatment(path,params){
         if (array["formOk"]) {
             message.className = "message green";
             window.setTimeout(
-                function(){ window.location = "../../index.php"; },3000
+                function(){ window.location = "?action=login"; },3000
             );
         }else{
             message.className = "message red";

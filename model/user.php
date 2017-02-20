@@ -20,53 +20,33 @@ function user_check_register($data){
     $errorMessage= '';
 
     check_required_field(['username', 'email', 'password', 'confirmationOfPassword', 'indic']);
-
     check_uniq_field(['username' => 'users', 'email' => 'users']);
 
     check_email($_POST['email']);
-
     check_password($_POST['password'], $_POST['confirmationOfPassword']);
-
-    /*SUPPRESS( put it in user_register)
-        if ($errorMessage == ') {
-            try{
-                $db = new PDO('mysql:host=localhost;dbname=filer','root','password');
-
-                $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-                $request = 'INSERT INTO `users` (`id`, `username`, `password`, `email`, `indicationPassword`) VALUES (:id, :username, :password, :email, :indic);';//BEWARE! not written in the same order than in db.
-                $statement = $db->prepare($request);
-                $statement->execute([
-                    'id' => NULL,
-                    'username' => $_POST['username'],
-                    'password' => $_POST['password'],
-                    'email' => $_POST['email'],
-                    'indic' => $_POST['indic']
-                ]);
-            }
-
-            catch(PDOException $e){
-                echo $e;
-            }
-
-            $db = null;
-
-            mkdir('../../files/'.htmlspecialchars($_POST['username']));//create folder for user file
-    ENDSUPPRESS*/
 
     return get_array_returned($errorMessage);
 }
 
 function user_hash($pass){
-    $hash = password_hash($pass, PASSWORD_BCRYPT, ['salt' => 'saltysaltysaltysalty!!']);
+    $hash = password_hash($pass, PASSWORD_BCRYPT);//todo : generate RANDOM hash and stock them into db (harder to break...)
     return $hash;
 }
 
-function user_register($data){
-    $user['username'] = $data['username'];
-    $user['password'] = user_hash($data['password']);
-    $user['email'] = $data['email'];
+function transform_data($data){
+    $data['password'] = user_hash($data['password']);
+    return $data;
+}
+
+function user_register($data, $arrayFields){
+    $data = transform_data($data);//currently useless (function with only one instruction... But allows easier improvement if in the future one want to add other
+    // transformation to data before inscription in db.
+    foreach ($arrayFields as $field) {
+        $user[$field] = $data[$field];
+    }
     db_insert('users', $user);
+
+    mkdir('uploads/'.htmlspecialchars($user['username']));//create folder for user file
 }
 
 function user_check_login($data){

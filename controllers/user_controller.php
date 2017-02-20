@@ -29,7 +29,7 @@ function register_action(){
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $arrayReturned = user_check_register($_POST);
         if ($arrayReturned['formOk']){
-            //user_register($_POST);
+            user_register($_POST, ['username', 'email', 'password', 'indic']);
         }
         echo json_encode($arrayReturned);
     }else{
