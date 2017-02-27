@@ -1,6 +1,9 @@
 <?php
 
 session_start();
+if (!array_key_exists('errorMessage', $_SESSION)){
+    $_SESSION['errorMessage'] = '';
+}
 
 require('config/config.php');
 

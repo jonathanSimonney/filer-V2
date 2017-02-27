@@ -20,7 +20,7 @@
         </form>
 
         <p id="message" class="message red">
-
+            <?php echo $_SESSION['errorMessage'];?>
         </p>
 
         <script src="assets/JS/login.js"></script>

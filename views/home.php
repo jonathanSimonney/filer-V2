@@ -26,28 +26,6 @@
 
 <?php
 /*
-    <h1 class="message red">use the following to upload your file.</h1>
-    <form action="../../assets/scripts/PHP/managingFiles/uploadingFile.php" method="post" enctype="multipart/form-data" name="uploadFile">
-        <fieldset class="centeredChild">
-            <input type="file" name="file">
-            <br>
-            <label for="name">name : </label>
-            <input id="name" type="text" name="name" placeholder="type here the name of your file"><br>
-            <input type="submit" id="uploadFile">
-        </fieldset>
-    </form>
-
-    <p id="message" class="message red">
-        <?php
-        if (array_key_exists("errorMessage", $_SESSION)) {
-            echo $_SESSION["errorMessage"];
-            $_SESSION["errorMessage"] = "";
-        }
-        ?>
-    </p>
-
-
-
 <!----------------------------------------------------------form to add files----------------------------------------------------------->
     <?php
 

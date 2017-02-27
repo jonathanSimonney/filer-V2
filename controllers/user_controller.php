@@ -3,7 +3,6 @@
 require_once('model/user.php');
 
 function login_action(){
-    $error = '';
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (user_check_login($_POST)) {
             user_login($_POST['username']);
@@ -14,6 +13,7 @@ function login_action(){
         }
     }else{
         require('views/login.php');
+        $_SESSION['errorMessage'] = '';
     }
 }
 
