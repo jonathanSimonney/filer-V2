@@ -6,7 +6,7 @@
             require('views/inc/header.php');
         ?>
         <h1 class="message red">use the following to upload your file.</h1>
-        <form action="FINDONE" method="post" enctype="multipart/form-data" name="uploadFile">
+        <form action="?action=upload" method="post" enctype="multipart/form-data" name="uploadFile">
             <fieldset class="centeredChild">
                 <input type="file" name="file">
                 <br>
@@ -16,7 +16,12 @@
             </fieldset>
         </form>
 
-        <p id="message" class="message red"></p>
+        <p id="message" class="message red">
+            <?php echo $_SESSION['errorMessage'] ?>
+        </p>
+
+
+        <script src="assets/JS/files.js"></script>
     </body>
 
 <?php

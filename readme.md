@@ -10,4 +10,14 @@ You'll need to create your own private.php file, and within it,
 PS : (Don't forget the <?php at the beginning of this private.php file, obviously...)
 <br>This file should be put in the config folder. 
 
-TODO : avoid Access to forbidden files via /.. (url rewrite???)\
+TODO : avoid access to forbidden files via /.. (url rewrite???)\
+
+
+<b>Perso : planning : </b><br>
+Lundi : finir ajout de fichiers en db.<br>
+Mardi : finir affichage des fichiers et gestion des fichiers.<br>
+Mercredi : Système de dossier.<br>
+Jeudi : visualisation + modification de dossier<br>
+Vendredi : Fichiers de log.<br>
+et jours suivants : Si retard à rattrapper + refactoriser, vérifier, 
+ajouter bonus etc.
