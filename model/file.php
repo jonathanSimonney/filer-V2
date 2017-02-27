@@ -11,6 +11,7 @@ function format_file_info($file, $nameFile){
 
     $nameFile = preg_replace('/'.$type.'(?!=.)/', '', $nameFile);
     $pathFile = 'uploads/'.$_SESSION['currentUser']['data']['id'].'/'.$nameFile.$type;
+    $type = str_replace(".", "", $type);
 
     return [
         'type' => $type,
@@ -38,28 +39,28 @@ function is_upload_possible($file, $fileInformations){
     }
 }
 
-
-
-function upload_this_file($file, $name){
-    $fileInformations = format_file_info($file, $name);
-    if (is_upload_possible($file, $fileInformations)){
-        //make_upload($file, $name);
-        echo 'upload done!';
+function upload_file_in_folder($file, $fileInformations){
+    if (!move_uploaded_file($file['tmp_name'], $fileInformations['path'])){
+        $_SESSION['errorMessage'] = "your file wasn't uploaded. Please try seeing if your username is a valid one.";
+        return false;
     }else{
-        echo $_SESSION['errorMessage'];
+        return true;
     }
+}
+
+function make_upload($file, $fileInformations){
+    if (upload_file_in_folder($file, $fileInformations)){
+        //upload_file_in_db($file, $fileInformations);
+    }
+}
 
 
-    /*<?php
+/*<?php
     $_SESSION["errorMessage"] = "";
     $file = $_FILES["file"];
     $nameFile = $_POST["name"];
 
     if ($_SESSION["errorMessage"] == "") {
-
-        $type = str_replace(".", "", $type);
-
-
         if (!move_uploaded_file($file["tmp_name"], $pathFile)){
             $_SESSION["errorMessage"] = "your file wasn't uploaded. Please try seeing if your username is a valid one.";
         }else{
@@ -94,4 +95,3 @@ function upload_this_file($file, $name){
 
     header("Location: ../../../../pages/connected/listFiles.php");
     exit();*/
-}

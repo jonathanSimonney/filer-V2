@@ -3,5 +3,13 @@
 require_once "model/file.php";
 
 function upload_action(){
-    upload_this_file($_FILES['file'], $_POST['name']);//todo : make this with asynchronous, to avoid reload of home page with only one file changed.
+    $fileInformations = format_file_info($_FILES['file'], $_POST['name']);
+    if (is_upload_possible($_FILES['file'], $fileInformations)){
+        make_upload($_FILES['file'], $fileInformations);
+        echo 'upload done!';
+    }else{
+        echo $_SESSION['errorMessage'];
+    }
+
+    //todo : make this with asynchronous, to avoid reload of home page with only one file changed.
 }
