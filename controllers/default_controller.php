@@ -10,11 +10,3 @@ function home_action(){
         exit(0);
     }
 }
-
-function about_action(){
-    require('views/about.html');
-}
-
-function contact_action(){
-    require('views/contact.html');
-}
