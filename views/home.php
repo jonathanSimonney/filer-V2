@@ -22,7 +22,9 @@
 
 
         <script src="assets/JS/files.js"></script>
-    </body>
+
+        <div class='centeringDiv blueBackground'><div class='listFilesUser'>
+
 
 <?php
 /*

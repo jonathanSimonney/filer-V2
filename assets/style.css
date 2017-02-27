@@ -91,7 +91,7 @@ body{
     display: none;
     opacity: 0;/*I'D ALMOST CONSIDER USING !important! for this, so,
 	DO NOT ALLOW USER TO SEE THIS BLOCK (obviously, he can see it through html,
-	but there is security against this*/
+	but there is security against this)*/
 }
 
 /*TODO : change animation (also in js to change name)*/

@@ -83,7 +83,7 @@ function find_all_secure($query, $data = []){
 }
 
 function get_what_how($needle, $needleColumn, $needleTable){
-    $data = find_one_secure('SELECT * FROM `'.$needleTable.'` WHERE `'.$needleColumn.'` = :needle',
+    $data = find_all_secure('SELECT * FROM `'.$needleTable.'` WHERE `'.$needleColumn.'` = :needle',
         ['needle' => $needle]);
     return $data;
 }

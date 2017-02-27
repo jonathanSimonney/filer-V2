@@ -44,7 +44,7 @@ function user_register($data, $arrayFields){
         $user[$field] = $data[$field];
     }
     db_insert('users', $user);
-    $user = get_what_how($data['username'], 'username', 'users');
+    $user = get_what_how($data['username'], 'username', 'users')[0];
     $_SESSION['currentUser']['data'] = $user;//currently useless, but could be used later to pre-fill login field or something else.
     $_SESSION['currentUser']['loggedIn'] = false;
 
