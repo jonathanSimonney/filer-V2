@@ -33,6 +33,6 @@
 
 
 
-        <script type="text/javascript" src="web/JS/signUpScript.js"></script>
+        <script type="text/javascript" src="assets/JS/signUpScript.js"></script>
     </body>
 </html>

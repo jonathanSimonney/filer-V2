@@ -3,10 +3,9 @@
 require_once('model/user.php');
 
 function home_action(){
-    if (!empty($_SESSION['user_id'])) {
+    if ($_SESSION['currentUser']['loggedIn']) {
         require('views/home.php');
-    }
-    else{
+    }else{
         header('Location: ?action=login');
         exit(0);
     }

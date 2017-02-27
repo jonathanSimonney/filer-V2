@@ -7,14 +7,14 @@ function login_action(){
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (user_check_login($_POST)) {
             user_login($_POST['username']);
-            header('Location: ?action=home');
-            exit(0);
+        }else{
+            $jsonValue = $_SESSION['errorMessage'];
+            require('views/inc/json.php');
+            $_SESSION['errorMessage'] = '';
         }
-        else {
-            $error = "Invalid username or password";
-        }
+    }else{
+        require('views/login.php');
     }
-    require('views/login.php');
 }
 
 function logout_action(){
@@ -31,7 +31,8 @@ function register_action(){
         if ($arrayReturned['formOk']){
             user_register($_POST, ['username', 'email', 'password', 'indic']);
         }
-        echo json_encode($arrayReturned);
+        $jsonValue = $arrayReturned;
+        require('views/inc/json.php');
     }else{
         require('views/register.php');
     }

@@ -1,7 +1,7 @@
 <?php
 
-require_once('model/db.php');
-require_once('model/form_check.php');
+require_once 'model/db.php';
+require_once 'model/form_check.php' ;
 
 function get_user_by_id($id){
     $id = (int)$id;
@@ -16,8 +16,7 @@ function get_user_by_username($username){
 }
 
 function user_check_register($data){
-    global $errorMessage;
-    $errorMessage= '';
+    $_SESSION['errorMessage'] ='';
 
     check_required_field(['username', 'email', 'password', 'confirmationOfPassword', 'indic']);
     check_uniq_field(['username' => 'users', 'email' => 'users']);
@@ -25,7 +24,7 @@ function user_check_register($data){
     check_email($_POST['email']);
     check_password($_POST['password'], $_POST['confirmationOfPassword']);
 
-    return get_array_returned($errorMessage);
+    return get_array_returned($_SESSION['errorMessage']);
 }
 
 function user_hash($pass){
@@ -46,31 +45,87 @@ function user_register($data, $arrayFields){
     }
     db_insert('users', $user);
     $user = get_what_how($data['username'], 'username', 'users');
-    $_SESSION['currentUser'] = $user;
+    $_SESSION['currentUser']['data'] = $user;
+    $_SESSION['currentUser']['loggedIn'] = false;
 
-    mkdir('web/uploads/'.$user['id']);//create folder for user file
+    mkdir('uploads/'.$user['id']);//create folder for user file
 }
 
 function user_check_login($data){
+    /*
+    try{
+        $db = new PDO("mysql:host=localhost;dbname=filer","root","password");
+
+        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $request = "SELECT `password`,`indicationPassword` FROM `users` WHERE `users`.`username` = :username;";
+        $statement = $db->prepare($request);
+        $statement->execute([
+            'username' => $_POST["username"]
+        ]);
+
+        $arrayResult = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        if (array_key_exists(0, $arrayResult)) {
+            $expectedPassword = $arrayResult[0]["password"];
+            if ($expectedPassword == $_POST["password"]) {
+                $formOk = true;
+                $errorMessage = "";
+
+                session_start();
+                $_SESSION["isLoggedIn"] =true;
+                $_SESSION["username"] = $_POST["username"];
+
+                $request = "SELECT `id` FROM `users` WHERE `users`.`username` = :username;";
+                $statement = $db->prepare($request);
+                $statement->execute([
+                    'username' => $_POST["username"]
+                ]);
+
+                $arrayResult = $statement->fetchAll(PDO::FETCH_ASSOC);
+                $_SESSION["idUser"] = $arrayResult[0]["id"];
+            }else{
+                $formOk = false;
+                $errorMessage = "Sorry, but your password does not correspond to your username. Try to take into account the following : ".htmlspecialchars($arrayResult[0]["indicationPassword"]).".";
+            }
+        }else{
+            $formOk = false;
+            $errorMessage = "Sorry, but your username is not attributed. Try to type another username.";
+        }
+
+        $db = null;
+    }
+
+    catch(PDOException $e){
+        echo $e;
+    }
+
+    $arrayReturned = [$formOk,$errorMessage];
+    echo json_encode($arrayReturned);
+    */
+
+
+
+    $_SESSION['errorMessage'] = '';
     if (empty($data['username']) OR empty($data['password'])){
+        $_SESSION['errorMessage'] = 'The fields username and password are required.';
         return false;
     }
     $user = get_user_by_username($data['username']);
     if ($user === false){
+        $_SESSION['errorMessage'] = 'Sorry, but the username '.$data['username'].' is not attributed. Try to type another username.';
         return false;
     }
-    $hash = user_hash($data['password']);
-    if ($hash !== $user['password']) {
-        return false;
+
+    if (password_verify($data['password'], $user['password'])) {
+        return true;
     }
-    return true;
+    $_SESSION['errorMessage'] = 'Sorry, but your password does not correspond to your username. Try to take into account the following : '.htmlspecialchars($user['indic']);
+    return false;
 }
 
 function user_login($username){
     $data = get_user_by_username($username);
-    if ($data === false){
-        return false;
-    }
-    $_SESSION['user_id'] = $data['id'];
-    return true;
+    $_SESSION['currentUser']['data'] = $data;
+    $_SESSION['currentUser']['loggedIn'] = true;
 }

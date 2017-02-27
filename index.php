@@ -2,7 +2,7 @@
 
 session_start();
 
-require('var/config/config.php');
+require('config/config.php');
 
 if (empty($_GET['action'])){
     $action = 'home';
