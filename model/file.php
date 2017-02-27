@@ -25,8 +25,7 @@ function is_upload_possible($file, $fileInformations){
 
     if ($fileInformations['name'] === '') {
         $_SESSION['errorMessage'] = 'You must put a name on your file.';
-    }elseif(get_what_how($fileInformations['path'],'pathFile', 'files')){
-        var_dump(get_what_how($fileInformations['path'],'pathFile', 'files'));
+    }elseif(get_what_how($fileInformations['path'],'path', 'files')){
         $_SESSION['errorMessage'] = 'The name '.$fileInformations['name'].' is already used for one of your files. Please type another name or use the replace button.';
     }elseif(empty($file['name'])){
         $_SESSION['errorMessage'] = 'You must choose a file to upload.';
@@ -48,50 +47,14 @@ function upload_file_in_folder($file, $fileInformations){
     }
 }
 
-function make_upload($file, $fileInformations){
-    if (upload_file_in_folder($file, $fileInformations)){
-        //upload_file_in_db($file, $fileInformations);
-    }
+function upload_file_in_db($fileInformations){
+    $fileInformations['user_id'] = $_SESSION['currentUser']['data']['id'];
+    db_insert('files', $fileInformations, true);
 }
 
 
-/*<?php
-    $_SESSION["errorMessage"] = "";
-    $file = $_FILES["file"];
-    $nameFile = $_POST["name"];
-
-    if ($_SESSION["errorMessage"] == "") {
-        if (!move_uploaded_file($file["tmp_name"], $pathFile)){
-            $_SESSION["errorMessage"] = "your file wasn't uploaded. Please try seeing if your username is a valid one.";
-        }else{
-            try{
-                $db = new PDO("mysql:host=localhost;dbname=filer","root","password");
-
-                $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-                $request = "INSERT INTO `files` (`id`, `nameFile`, `pathFile`, `fileType`, `user_id`) VALUES (NULL, :nameFile, :pathFile, :fileType, ".$_SESSION["idUser"].");";
-
-                $statement = $db->prepare($request);
-
-
-
-                $statement->execute([
-                    'nameFile' => $nameFile,
-                    'pathFile' => $pathFile,
-                    'fileType' => $type
-                ]);
-
-                $db = null;
-            }
-
-            catch(PDOException $e){
-                echo $e;
-            }
-        }
+function make_upload($file, $fileInformations){
+    if (upload_file_in_folder($file, $fileInformations)){
+        upload_file_in_db($fileInformations);
     }
-
-
-
-
-    header("Location: ../../../../pages/connected/listFiles.php");
-    exit();*/
+}

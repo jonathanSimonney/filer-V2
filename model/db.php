@@ -27,9 +27,10 @@ function get_dbh(){
     return $dbh;
 }
 
-function db_insert($table, $data = []){
+function db_insert($table, $data = [], $keyCorrespond = false){
     $dbh = get_dbh();
     $query = 'INSERT INTO `' . $table . '` VALUES ("",';
+    $keyQuery = '(`id`';
     $first = true;
     foreach ($data AS $k => $value) {
         if (!$first){
@@ -38,8 +39,14 @@ function db_insert($table, $data = []){
             $first = false;
         }
         $query .= ':'.$k;
+        $keyQuery .= ',`'.$k.'`';
     }
     $query .= ')';
+    $keyQuery .= ')';
+
+    if ($keyCorrespond){
+        $query = str_replace('INSERT INTO `' . $table . '` VALUES', 'INSERT INTO `' . $table . '`'.$keyQuery.' VALUES', $query);
+    }
     $sth = $dbh->prepare($query);
     $sth->execute($data);
     return true;

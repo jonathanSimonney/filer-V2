@@ -2,6 +2,7 @@
 function home_action(){
     if ($_SESSION['currentUser']['loggedIn']) {
         require('views/home.php');
+        $_SESSION['errorMessage'] = '';
     }else{
         header('Location: ?action=login');
         exit(0);
