@@ -2,16 +2,53 @@
 
 require_once 'model/db.php';
 
-function format_file_info($file, $nameFile){
+function get_file_data($fileId){
+    return get_what_how($fileId, 'id', 'files')[0];
+}
+
+function download_file($fileData){
+    // Specify file path.
+    $download_file =  $fileData['path'];
+    // Getting file extension.
+    $extension = $fileData['type'];
+    // For Gecko browsers
+    header('Content-Transfer-Encoding: binary');
+    header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime(str_replace($fileData['name'].'.'.$extension, '', $download_file))) . ' GMT');
+    // Supports for download resume
+    header('Accept-Ranges: bytes');
+    // Calculate File size
+    header('Content-Length: ' . filesize($download_file));
+    header('Content-Encoding: none');
+    // Change the mime type if the file is not PDF
+    header('Content-Type: application/' . $extension);
+    // Make the browser display the Save As dialog
+    header('Content-Disposition: attachment; filename=' . $fileData['name'].'.'.$extension);
+    readfile($download_file);
+    exit;
+}
+
+function format_file_name($nameFile, $type){
+    $nameFile = preg_replace('/'.$type.'(?!=.)/', '', $nameFile);
+    $nameFile = urlencode($nameFile);
+    return $nameFile;
+}
+
+function get_file_type($file){
     $type = '';
     if (!empty($file['name'])){
         preg_match('/\.[0-9a-z]+$/', $file["name"], $cor);
         $type = $cor[0];
     }
 
-    $nameFile = preg_replace('/'.$type.'(?!=.)/', '', $nameFile);
-    $pathFile = 'uploads/'.$_SESSION['currentUser']['data']['id'].'/'.$nameFile.$type;
     $type = str_replace(".", "", $type);
+    return $type;
+}
+
+function format_file_info($file, $nameFile){
+    $type = get_file_type($file);
+
+    $nameFile = format_file_name($nameFile, $type);
+    $pathFile = 'uploads/'.$_SESSION['currentUser']['data']['id'].'/'.$nameFile.'.'.$type;
 
     return [
         'type' => $type,

@@ -2,12 +2,12 @@
     echo "<div class='icon ".$value['type']."'>";
 ?>
     <br><br>
-    <a href= <?php echo "'".$value['path']."'"; ?> download  class="download"><i class="fa fa-arrow-down" aria-hidden="true"></i></a>
+    <a href= "?action=download&fileId=<?php echo $value['id'] ?>"  class="download"><i class="fa fa-arrow-down" aria-hidden="true"></i></a>
     <button class="replace">replace</button>
     <button class="rename">rename</button>
     <i class="fa fa-trash delete" aria-hidden="true"></i>
 
-    <span class="name"><?php echo $value['name']; ?></span><span class="extFile"><?php echo ".".$value["type"]; ?></span>
+    <span class="name"><?php echo $value['name']; ?><span class="extFile"><?php echo ".".$value["type"]; ?></span></span>
 
     <form class="replaceForm toHide" action="../../assets/scripts/PHP/managingFiles/replaceFiles.php" method="post" enctype="multipart/form-data">
         <input type="file" name="file">

@@ -3,6 +3,14 @@
 require_once 'model/db.php';
 require_once 'model/form_check.php' ;
 
+function is_logged_in(){
+    if (!$_SESSION['currentUser']['loggedIn']){
+        $_SESSION['errorMessage'] = 'Sorry, but you tried to access a page without authorisation. Please log in.';
+        header('Location: ?action=login');
+        exit(0);
+    }
+}
+
 function get_user_by_id($id){
     $id = (int)$id;
     $data = find_one('SELECT * FROM users WHERE id = '.$id);

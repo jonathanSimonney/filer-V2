@@ -16,7 +16,6 @@ if (empty($_GET['action'])){
 if (isset($routes[$action])){
     require('controllers/'.$routes[$action].'_controller.php');
     call_user_func($action.'_action');
-}
-else{
+}else{
     die('Illegal route');
 }
