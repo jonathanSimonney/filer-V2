@@ -29,7 +29,9 @@ function download_file($fileData){
 
 function format_file_name($nameFile, $type){
     $nameFile = preg_replace('/'.$type.'(?!=.)/', '', $nameFile);
+    echo $nameFile;
     $nameFile = urlencode($nameFile);
+    echo $nameFile;
     return $nameFile;
 }
 
@@ -47,7 +49,7 @@ function get_file_type($file){
 function format_file_info($file, $nameFile){
     $type = get_file_type($file);
 
-    $nameFile = format_file_name($nameFile, $type);
+    $nameFile = format_file_name($nameFile, '.'.$type);
     $pathFile = 'uploads/'.$_SESSION['currentUser']['data']['id'].'/'.$nameFile.'.'.$type;
 
     return [

@@ -12,8 +12,8 @@ function upload_action(){
         make_upload($_FILES['file'], $fileInformations);
     }
 
-    header('Location: ?action=home');
-    exit();
+   /* header('Location: ?action=home');
+    exit();*/
 
     //todo : make this with asynchronous, to avoid reload of home page with only one file changed.
 }
