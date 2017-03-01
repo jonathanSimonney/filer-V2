@@ -9,7 +9,7 @@
 
     <span class="name"><?php echo $value['name']; ?><span class="extFile"><?php echo ".".$value["type"]; ?></span></span>
 
-    <form class="replaceForm toHide" action="../../assets/scripts/PHP/managingFiles/replaceFiles.php" method="post" enctype="multipart/form-data">
+    <form class="replaceForm toHide" action="?action=replace" method="post" enctype="multipart/form-data">
         <input type="file" name="file">
         <br>
         <input type="number" name="notForUser" class="notForUser" value=<?php echo "".$value['id'].""; ?>>
