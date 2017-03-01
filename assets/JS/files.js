@@ -1,3 +1,19 @@
+function toggleFormState(form){
+    var showForm = true;
+    if (form.className.search('appearingSlowly') !== -1){
+        showForm = false;
+    }
+    var toHide = document.querySelectorAll('.appearingSlowly');
+    for (var i in toHide){
+        if (typeof toHide[i].style != 'undefined') {
+            toHide[i].className = toHide[i].className.replace('appearingSlowly','');
+        }
+    }
+    if (showForm){
+        form.className += " appearingSlowly";
+    }
+}
+
 window.onload = function(){
     var buttonReplace = document.querySelectorAll('.replace');
     var buttonRename = document.querySelectorAll('.rename');
@@ -19,13 +35,7 @@ window.onload = function(){
                     }
                 }
 
-                var toHide = document.querySelectorAll('.appearingSlowly');
-                for (var i in toHide){
-                    if (typeof toHide[i].style != 'undefined') {
-                        toHide[i].className = toHide[i].className.replace('appearingSlowly','');
-                    }
-                }
-                toShowForm.className += " appearingSlowly";
+                toggleFormState(toShowForm);
             }
         }
     }
@@ -43,13 +53,7 @@ window.onload = function(){
                     }
                 }
 
-                var toHide = document.querySelectorAll('.appearingSlowly');
-                for (var i in toHide){
-                    if (typeof toHide[i].style != 'undefined') {
-                        toHide[i].className = toHide[i].className.replace('appearingSlowly','');
-                    }
-                }
-                toShowForm.className += " appearingSlowly";
+                toggleFormState(toShowForm);
             }
         }
     }
@@ -67,14 +71,8 @@ window.onload = function(){
                     }
                 }
 
-                var toHide = document.querySelectorAll('.appearingSlowly');
-                for (var i in toHide){
-                    if (typeof toHide[i].style != 'undefined') {
-                        toHide[i].className = toHide[i].className.replace('appearingSlowly','');
-                    }
-                }
-                toShowForm.className += " appearingSlowly";
+                toggleFormState(toShowForm);
             }
         }
     }
-}//TODO !IMPORTANT! close opened form when user clicks again on button.
+}
