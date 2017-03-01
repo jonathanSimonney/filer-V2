@@ -16,6 +16,9 @@ function requiredField($name){
             $name = strtolower($name);
         }
         $_SESSION['errorMessage'] .= "The field ".$name." is required and you didn't fill it.<br>";
+        return false;
+    }else{
+        return true;
     }
 }
 

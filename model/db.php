@@ -87,3 +87,25 @@ function get_what_how($needle, $needleColumn, $needleTable){
         ['needle' => $needle]);
     return $data;
 }
+
+function db_update($table, $fileId, $fieldToUpdateData){
+    $dbh = get_dbh();
+    $first = true;
+    $query = 'UPDATE `' . $table . '` SET ';
+    foreach ($fieldToUpdateData AS $key => $value){
+        if (!$first){
+            $query .= ', ';
+        }else{
+            $first = false;
+        }
+
+        $query .= '`'.$key.'` =:'.$key;
+    }
+
+    $query .= ' WHERE `'.$table.'`.`id` = '.$fileId;
+
+    echo $query;
+    var_dump($fieldToUpdateData);
+    $sth = $dbh->prepare($query);
+    $sth->execute($fieldToUpdateData);
+}

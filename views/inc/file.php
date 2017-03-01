@@ -16,7 +16,7 @@
         <input type="submit" class="button">
     </form>
 
-    <form class="renameForm toHide" action="../../assets/scripts/PHP/managingFiles/renameFiles.php" method="post">
+    <form class="renameForm toHide" action="?action=rename" method="post">
         <label for=<?php
         echo "'name".$numberForId."'";
         ?> >name : </label>

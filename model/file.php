@@ -6,6 +6,22 @@ function get_file_data($fileId){
     return get_what_how($fileId, 'id', 'files')[0];
 }
 
+function format_new_file_data($oldFileData){
+    $newFileData['name'] = format_file_name($_POST['name'], $oldFileData['type']);
+
+    //following regexp is supposed to select the oldFileName only if it is followed by its type with nothing behind.
+    $newFileData['path'] = preg_replace('/'.preg_quote($oldFileData['name'], NULL).'(?=\.'.$oldFileData['type'].'(?!=.))/', $newFileData['name'], $oldFileData['path']);
+    echo $newFileData['path'].'<br>';
+    echo '/'.preg_quote($oldFileData['name'], NULL).'(?=\.'.$oldFileData['type'].'(?!=.))/';
+    return $newFileData;
+}
+
+function rename_file($oldFileData){
+    $newFileData = format_new_file_data($oldFileData);
+    rename($oldFileData['path'], $newFileData['path']);
+    db_update('files', $oldFileData['id'], $newFileData);
+}
+
 function is_new_file_ok($oldFileData){
     if(empty($_FILES['file']['name'])){
         $_SESSION['errorMessage'] = 'You must choose a file to upload.';
@@ -46,9 +62,7 @@ function download_file($fileData){
 
 function format_file_name($nameFile, $type){
     $nameFile = preg_replace('/'.$type.'(?!=.)/', '', $nameFile);
-    echo $nameFile;
     $nameFile = urlencode($nameFile);
-    echo $nameFile;
     return $nameFile;
 }
 
