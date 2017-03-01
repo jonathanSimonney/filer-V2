@@ -77,4 +77,4 @@ window.onload = function(){
             }
         }
     }
-}//todo close opened form when user clicks again on button.
+}//TODO !IMPORTANT! close opened form when user clicks again on button.

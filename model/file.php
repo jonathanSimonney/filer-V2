@@ -6,6 +6,11 @@ function get_file_data($fileId){
     return get_what_how($fileId, 'id', 'files')[0];
 }
 
+function suppress_file($fileData){
+    unlink($fileData['path']);
+    db_suppress('files',$fileData['id']);
+}
+
 function format_new_file_data($oldFileData){
     $newFileData['name'] = format_file_name($_POST['name'], $oldFileData['type']);
 
@@ -27,7 +32,7 @@ function is_new_file_ok($oldFileData){
         $_SESSION['errorMessage'] = 'You must choose a file to upload.';
         return false;
     }elseif ($oldFileData['type'] !== get_file_type($_FILES['file'])) {
-        $_SESSION['errorMessage'] = 'The type of the file you wish to replace is not the same as the one you wish to upload instead)';
+        $_SESSION['errorMessage'] = 'The type of the file you wish to replace is not the same as the one you wish to upload instead';
         return false;
     }
     return true;

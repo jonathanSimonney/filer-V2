@@ -28,7 +28,7 @@
     </form>
 
 
-    <form class="deleteForm toHide" action="../../assets/scripts/PHP/managingFiles/deleteFiles.php" method="post">
+    <form class="deleteForm toHide" action="?action=remove" method="post">
         <input type="number" name="notForUser" class="notForUser" value=<?php echo "".$value['id'].""; ?>>
         <p>WARNING : ARE YOU SURE YOU WANT TO DELETE THIS FILE? THIS CAN'T BE UNDONE!</p>
         <input type="submit" class="button">

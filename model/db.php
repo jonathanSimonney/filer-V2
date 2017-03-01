@@ -88,7 +88,7 @@ function get_what_how($needle, $needleColumn, $needleTable){
     return $data;
 }
 
-function db_update($table, $fileId, $fieldToUpdateData){
+function db_update($table, $id, $fieldToUpdateData){
     $dbh = get_dbh();
     $first = true;
     $query = 'UPDATE `' . $table . '` SET ';
@@ -102,10 +102,18 @@ function db_update($table, $fileId, $fieldToUpdateData){
         $query .= '`'.$key.'` =:'.$key;
     }
 
-    $query .= ' WHERE `'.$table.'`.`id` = '.$fileId;
+    $query .= ' WHERE `'.$table.'`.`id` = '.$id;
 
-    echo $query;
-    var_dump($fieldToUpdateData);
+    /*echo $query;
+    var_dump($fieldToUpdateData);*/
     $sth = $dbh->prepare($query);
     $sth->execute($fieldToUpdateData);
+}
+
+function db_suppress($table, $id){
+    $dbh = get_dbh();
+    $query = 'DELETE FROM `'.$table.'` WHERE `'.$table.'`.`id` = '.$id.';';
+    echo $query;
+    $sth = $dbh->prepare($query);
+    $sth->execute();
 }

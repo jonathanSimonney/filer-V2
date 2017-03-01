@@ -15,7 +15,7 @@ TODO : avoid access to forbidden files via /.. (url rewrite???)\
 
 <b>Perso : planning : </b><br>
 Lundi : finir ajout de fichiers en db.DONE<br>
-Mardi : finir affichage des fichiers et gestion des fichiers.<br>
+Mardi : finir affichage des fichiers et gestion des fichiers.DONE<br>
 Mercredi : Système de dossier.<br>
 Jeudi : visualisation + modification de dossier<br>
 Vendredi : Fichiers de log.<br>

@@ -56,3 +56,16 @@ function rename_action(){
     header('Location: ?action=home');
     exit();
 }
+
+function remove_action(){
+    if ($_SERVER['REQUEST_METHOD'] === 'POST'){
+        $fileData = get_file_data($_POST['notForUser']);
+        if (user_can_access($fileData)){
+            suppress_file($fileData);
+        }
+    }else{
+        $_SESSION['errorMessage'] = 'Please access pages with provided links, not by writing yourself url.';
+    }
+    header('Location: ?action=home');
+    exit();
+}
