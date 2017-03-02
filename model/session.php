@@ -48,6 +48,14 @@ function set_item_in_array($arrayPath, $arrayChanged, $value){
     return $arrayChanged;
 }
 
+function access_item_in_array($arrayPath, $array){
+    $temp = &$array;
+    foreach($arrayPath as $key) {
+        $temp = &$temp[$key];
+    }
+    return $temp;
+}
+
 function updatePath($idParent, $suppressedArray, $key, $path){
     $path = array_merge([$idParent, 'childs'],$path);
     if (array_key_exists($idParent, $suppressedArray)){

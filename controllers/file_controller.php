@@ -77,7 +77,12 @@ function add_folder_action(){
     header('Location: ?action=home');
     exit();
 }
-/*
-function open_action(){
 
-}*/
+function open_action(){
+    $folderInformations = get_file_data($_GET['fileId']);
+    if (user_can_access($folderInformations)){
+        array_push($_SESSION['location'], $folderInformations['id'], 'childs');
+    }
+    header('Location: ?action=home');
+    exit();
+}

@@ -8,7 +8,13 @@ function get_file_data($fileId){
 }
 
 function suppress_file($fileData){
-    unlink($fileData['path']);
+    if ($fileData['type'] === ''){
+        unlink($fileData['path'].'/*');
+        rmdir($fileData['path']);
+    }else{
+        unlink($fileData['path']);
+    }
+
     db_suppress('files',$fileData['id']);
     session_delete($fileData['id']);
 }
