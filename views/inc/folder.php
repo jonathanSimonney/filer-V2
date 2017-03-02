@@ -2,11 +2,11 @@
 echo "<div class='icon folder'>";
 ?>
 <br><br>
-<button class="open">open</button>
-<button class="rename">rename</button>
-<i class="fa fa-trash delete" aria-hidden="true"></i>
+<button class="open clickable">open</button>
+<button class="rename clickable">rename</button>
+<i class="fa fa-trash delete clickable" aria-hidden="true"></i>
 
-<span class="name"><i class="fa fa-folder" aria-hidden="true"></i><?php echo $value['name']; ?></span>
+<span class="name clickable"><i class="fa fa-folder" aria-hidden="true"></i><?php echo $value['name']; ?></span>
 
 <form class="replaceForm toHide" action="?action=open" method="post">
     <input type="number" name="notForUser" class="notForUser" value=<?php echo "".$value['id'].""; ?>>

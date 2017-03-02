@@ -156,3 +156,7 @@ body{
     opacity: 1;
     display: block;
 }
+
+.clickable{
+    cursor: pointer;
+}

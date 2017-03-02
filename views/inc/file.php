@@ -2,10 +2,10 @@
     echo "<div class='icon ".$value['type']."'>";
 ?>
     <br><br>
-    <a href= "?action=download&fileId=<?php echo $value['id'] ?>"  class="download"><i class="fa fa-arrow-down" aria-hidden="true"></i></a>
-    <button class="replace">replace</button>
-    <button class="rename">rename</button>
-    <i class="fa fa-trash delete" aria-hidden="true"></i>
+    <a href= "?action=download&fileId=<?php echo $value['id'] ?>"  class="download clickable"><i class="fa fa-arrow-down" aria-hidden="true"></i></a>
+    <button class="replace clickable">replace</button>
+    <button class="rename clickable">rename</button>
+    <i class="fa fa-trash delete clickable" aria-hidden="true"></i>
 
     <span class="name"><?php echo $value['name']; ?><span class="extFile"><?php echo ".".$value["type"]; ?></span></span>
 
