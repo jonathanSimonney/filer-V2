@@ -8,7 +8,7 @@ require_once 'model/session.php';
 function home_action(){
     is_logged_in();
     require('views/home.php');
-    $_SESSION['location']['files'] = access_item_in_array($_SESSION['location']['array'],$_SESSION);
+    $_SESSION['location']['files'] = get_item_in_array($_SESSION['location']['array'],$_SESSION);
     $arrayFiles = $_SESSION['location']['files'];
     //var_dump($arrayFiles, $_SESSION['location'], $_SESSION['files']);
     if ($arrayFiles !== null){

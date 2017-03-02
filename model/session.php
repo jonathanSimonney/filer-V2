@@ -49,7 +49,7 @@ function set_item_in_array($arrayPath, $arrayChanged, $value){
     return $arrayChanged;
 }
 
-function access_item_in_array($arrayPath, $array){
+function get_item_in_array($arrayPath, $array){
     $temp = &$array;
     foreach($arrayPath as $key) {
         $temp = &$temp[$key];

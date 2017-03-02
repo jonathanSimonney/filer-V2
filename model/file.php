@@ -35,9 +35,11 @@ function format_new_file_data($oldFileData){
 }
 
 function rename_file($oldFileData, $newFileData){
-    rename($oldFileData['path'], $newFileData['path']);
+    $newFileData = array_merge($oldFileData, $newFileData);
+
+    rename(get_real_path_to_file($oldFileData), get_real_path_to_file($newFileData));
     db_update('files', $oldFileData['id'], $newFileData);
-    session_file_update($oldFileData['id'], $newFileData);
+    $_SESSION = set_item_in_array(array_merge($_SESSION['location']['array'],[$oldFileData['id']]),$_SESSION,$newFileData);
 }
 
 function is_name_ok($fileData){//Todo check if name correspond to current name.
@@ -45,8 +47,10 @@ function is_name_ok($fileData){//Todo check if name correspond to current name.
 
     if ($fileData['name'] === '') {
         $_SESSION['errorMessage'] = 'You must put a name on your file.';
-    }elseif(get_what_how($fileData['path'],'path', 'files')){
-        $_SESSION['errorMessage'] = 'The name '.$fileData['name'].' is already used in this folder. Please type another name or use the replace button.';
+    }elseif($_SESSION['location']['files'] !== null){
+        if (array_key_exists($fileData['path'], make_inferior_key_index($_SESSION['location']['files'], 'path'))){
+            $_SESSION['errorMessage'] = 'The name '.$fileData['name'].' is already used for one of your files. Please type another name or use the replace button.';
+        }
     }
 
     if ($_SESSION['errorMessage'] === ''){
@@ -182,7 +186,7 @@ function get_real_path_to_file($fileInformations){
     foreach ($_SESSION['location']['array'] as $key => $value){
         $cursor[] = $value;
         if ($key%2 === 1){
-            $addedPath = access_item_in_array($cursor, $_SESSION)['path'];
+            $addedPath = get_item_in_array($cursor, $_SESSION)['path'];
             if ($first){
                 $first = false;
             }else{
