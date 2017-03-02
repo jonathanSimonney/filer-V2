@@ -1,6 +1,7 @@
 <?php
 
 require_once 'model/db.php';
+require_once 'model/session_storage.php';
 
 function get_file_data($fileId){
     return get_what_how($fileId, 'id', 'files')[0];
@@ -9,6 +10,7 @@ function get_file_data($fileId){
 function suppress_file($fileData){
     unlink($fileData['path']);
     db_suppress('files',$fileData['id']);
+    session_storage_delete($fileData['id']);
 }
 
 function format_new_file_data($oldFileData){
@@ -25,6 +27,7 @@ function rename_file($oldFileData){
     $newFileData = format_new_file_data($oldFileData);
     rename($oldFileData['path'], $newFileData['path']);
     db_update('files', $oldFileData['id'], $newFileData);
+    session_storage_file_update($oldFileData['id'], $newFileData);
 }
 
 function is_new_file_ok($oldFileData){
@@ -127,9 +130,9 @@ function upload_file_in_db($fileInformations){
     db_insert('files', $fileInformations, true);
 }
 
-
 function make_upload($file, $fileInformations){
     if (upload_file_in_folder($file, $fileInformations)){
         upload_file_in_db($fileInformations);
+        upload_file_in_session_storage($fileInformations);
     }
 }

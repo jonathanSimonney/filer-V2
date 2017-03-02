@@ -94,6 +94,48 @@ body{
     white-space: nowrap;
 }
 
+.creationSpace{
+    min-height:50vh;
+    margin: 3vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.creationButtons{
+    height:4vh;
+    display: flex;
+    width:100vw;
+    flex-direction:row;
+    justify-content:space-around;
+}
+
+.creationSpace>form{
+    min-height:20vh;
+    display: flex;
+    margin:3vh;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.creationSpace>form.appearingSlowly{
+    display: flex;
+}
+
+.creationSpace>form>div{
+    padding:5px;
+    border:2px groove threedface;
+    height:100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items:center;
+}
+
+.creationSpace>form>div>label{
+    align-self:flex-start;
+}
+
 .notForUser{
     display: none;
     opacity: 0;/*I'D ALMOST CONSIDER USING !important! for this, so,

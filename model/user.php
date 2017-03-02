@@ -1,6 +1,7 @@
 <?php
 
 require_once 'model/db.php';
+require_once 'model/session_storage.php';
 require_once 'model/form_check.php' ;
 
 function get_user_by_id($id){
@@ -73,5 +74,7 @@ function user_check_login($data){
 function user_login($username){
     $data = get_user_by_username($username);
     $_SESSION['currentUser']['data'] = $data;
+    $_SESSION['files'] = get_what_how($_SESSION['currentUser']['data']['id'],'user_id','files');
+    $_SESSION['files'] = make_inferior_key_index($_SESSION['files'], 'id');
     $_SESSION['currentUser']['loggedIn'] = true;
 }

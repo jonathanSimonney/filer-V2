@@ -7,7 +7,7 @@ require_once 'model/security.php';
 function home_action(){
     is_logged_in();
     require('views/home.php');
-    $arrayFiles = get_what_how($_SESSION['currentUser']['data']['id'],'user_id','files');
+    $arrayFiles = $_SESSION['files'];
     $numberForId = 0;
     foreach ($arrayFiles as $key => $value){
         $numberForId++;

@@ -18,9 +18,16 @@ window.onload = function(){
     var buttonReplace = document.querySelectorAll('.replace');
     var buttonRename = document.querySelectorAll('.rename');
     var buttonDelete = document.querySelectorAll('.delete');
-    var nameFileSelected = "";
-    var formReplaceButton = document.querySelectorAll('.replaceForm>.button');
-    var formRenameButton = document.querySelectorAll('.renameForm>.button');
+    var buttonUpload = document.getElementById('upload');
+    var buttonFolder = document.getElementById('folder');
+
+    buttonFolder.onclick = function () {
+        toggleFormState(document.querySelector('.addFolder'));
+    };
+
+    buttonUpload.onclick = function(){
+        toggleFormState(document.querySelector('.uploadForm'));
+    };
 
     for (var i in buttonReplace){
         if (typeof buttonReplace[i].style != 'undefined') {

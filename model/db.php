@@ -82,6 +82,11 @@ function find_all_secure($query, $data = []){
     return $result;
 }
 
+function get_last_inserted_id(){
+    $dbh = get_dbh();
+    return $dbh->lastInsertId();
+}
+
 function get_what_how($needle, $needleColumn, $needleTable){
     $data = find_all_secure('SELECT * FROM `'.$needleTable.'` WHERE `'.$needleColumn.'` = :needle',
         ['needle' => $needle]);
