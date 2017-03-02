@@ -15,9 +15,14 @@ function suppress_file($fileData){
 
 function format_new_file_data($oldFileData){
     $newFileData['name'] = format_file_name($_POST['name'], $oldFileData['type']);
+    if ($oldFileData['type'] === ''){
+        $newFileData['path'] = preg_replace('/'.preg_quote($oldFileData['name'], NULL).'(?!=.)/', $newFileData['name'], $oldFileData['path']);
+    }else{
+        //following regexp is supposed to select the oldFileName only if it is followed by its type with nothing behind.
+        $newFileData['path'] = preg_replace('/'.preg_quote($oldFileData['name'], NULL).'(?=\.'.$oldFileData['type'].'(?!=.))/', $newFileData['name'], $oldFileData['path']);
+    }
 
-    //following regexp is supposed to select the oldFileName only if it is followed by its type with nothing behind.
-    $newFileData['path'] = preg_replace('/'.preg_quote($oldFileData['name'], NULL).'(?=\.'.$oldFileData['type'].'(?!=.))/', $newFileData['name'], $oldFileData['path']);
+
     return $newFileData;
 }
 
@@ -27,12 +32,13 @@ function rename_file($oldFileData, $newFileData){
     session_file_update($oldFileData['id'], $newFileData);
 }
 
-function is_name_ok($fileData){
+function is_name_ok($fileData){//Todo check if name correspond to current name.
     $_SESSION['errorMessage'] = '';
 
     if ($fileData['name'] === '') {
         $_SESSION['errorMessage'] = 'You must put a name on your file.';
     }elseif(get_what_how($fileData['path'],'path', 'files')){
+        var_dump($fileData, get_what_how($fileData['path'],'path', 'files'));
         $_SESSION['errorMessage'] = 'The name '.$fileData['name'].' is already used in this folder. Please type another name or use the replace button.';
     }
 

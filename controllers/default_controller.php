@@ -11,7 +11,11 @@ function home_action(){
     $numberForId = 0;
     foreach ($arrayFiles as $key => $value){
         $numberForId++;
-        require 'views/inc/file.php';
+        if ($value['type'] === ''){
+            require 'views/inc/folder.php';
+        }else{
+            require 'views/inc/file.php';
+        }
     }
     for ($i = 0;$i !== 2;$i++){
         require 'views/inc/divClosure.html';
