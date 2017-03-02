@@ -1,7 +1,7 @@
 <?php
 
 require_once 'model/db.php';
-require_once 'model/session_storage.php';
+require_once 'model/session.php';
 require_once 'model/form_check.php' ;
 
 function get_user_by_id($id){

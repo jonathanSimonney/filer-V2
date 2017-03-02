@@ -1,4 +1,5 @@
 <?php
+require_once 'model/session.php';
 
 $dbh = null;
 
@@ -88,8 +89,13 @@ function get_last_inserted_id(){
 }
 
 function get_what_how($needle, $needleColumn, $needleTable){
-    $data = find_all_secure('SELECT * FROM `'.$needleTable.'` WHERE `'.$needleColumn.'` = :needle',
-        ['needle' => $needle]);
+    if ($needleTable === 'files' && !empty($_SESSION['files'])){
+        $data = find_corresponding_elements($_SESSION['files'],$needleColumn,$needle);
+    }else{
+        $data = find_all_secure('SELECT * FROM `'.$needleTable.'` WHERE `'.$needleColumn.'` = :needle',
+            ['needle' => $needle]);
+    }
+
     return $data;
 }
 

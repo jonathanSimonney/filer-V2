@@ -8,6 +8,21 @@ function make_inferior_key_index($superArray, $inferior_key){
     return $new_array;
 }
 
+function find_corresponding_elements($superArray, $needleKey, $needleValue){
+    $array_analysed = make_inferior_key_index($superArray, $needleKey);
+    foreach ($array_analysed as $key => $array){
+        if ((string)$key === (string)$needleValue){
+            $ret[] = $array;
+        }
+    }
+
+    if (!isset($ret)){
+        $ret = false;
+    }
+
+    return $ret;
+}
+
 function session_storage_delete($id){
     unset($_SESSION['files'][$id]);
 }

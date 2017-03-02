@@ -8,16 +8,13 @@ require_once 'model/form_check.php';
 is_logged_in();//COMMON TO ALL FUNCTION WHO ACT ON FILES!!!
 
 function upload_action(){
-    $fileInformations = format_file_info($_FILES['file'], $_POST['name']);/*todo either forbid .php files OR replace extension + same for
-     name with /.*/
+    $fileInformations = format_file_info($_FILES['file'], $_POST['name']);
     if (is_upload_possible($_FILES['file'], $fileInformations)) {
         make_upload($_FILES['file'], $fileInformations);
     }
 
     header('Location: ?action=home');
     exit();
-
-    //todo : make this with asynchronous, to avoid reload of home page with only one file changed.
 }
 
 function download_action(){
@@ -68,4 +65,11 @@ function remove_action(){
     }
     header('Location: ?action=home');
     exit();
+}
+
+function add_folder_action(){
+    if (requiredField('name')){
+        $name = urlencode($_POST['name']);
+        //db_insert('files',[])
+    }
 }

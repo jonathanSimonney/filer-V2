@@ -1,7 +1,7 @@
 <?php
 
 require_once 'model/db.php';
-require_once 'model/session_storage.php';
+require_once 'model/session.php';
 
 function get_file_data($fileId){
     return get_what_how($fileId, 'id', 'files')[0];
@@ -85,8 +85,12 @@ function get_file_type($file){
     return $type;
 }
 
-function format_file_info($file, $nameFile){
-    $type = get_file_type($file);
+function format_file_info($file, $nameFile, $is_file = true){
+    if ($is_file){
+        $type = get_file_type($file);
+    }else{
+        $type = '';
+    }
 
     $nameFile = format_file_name($nameFile, '.'.$type);
     $pathFile = 'uploads/'.$_SESSION['currentUser']['data']['id'].'/'.$nameFile.'.'.$type;

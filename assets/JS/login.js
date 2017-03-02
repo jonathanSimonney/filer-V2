@@ -4,7 +4,6 @@ function asynchronousTreatment(path,params){
 	request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	request.onload = function(e) {
         //document.write(request.responseText);
-        console.log(request.responseText);
         var message = document.getElementById('message');
 		if (request.responseText !== ''){
             message.innerHTML = JSON.parse(request.responseText);
