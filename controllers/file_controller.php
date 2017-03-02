@@ -77,3 +77,7 @@ function add_folder_action(){
     header('Location: ?action=home');
     exit();
 }
+/*
+function open_action(){
+
+}*/

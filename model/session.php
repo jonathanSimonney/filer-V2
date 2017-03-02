@@ -38,3 +38,44 @@ function upload_file_in_session($fileInformations){
     $fileInformations['user_id'] = $_SESSION['currentUser']['data']['id'];
     $_SESSION['files'][$fileInformations['id']] = $fileInformations;
 }
+
+function set_item_in_array($arrayPath, $arrayChanged, $value){
+    $temp = &$arrayChanged;
+    foreach($arrayPath as $key) {
+        $temp = &$temp[$key];
+    }
+    $temp = $value;
+    return $arrayChanged;
+}
+
+function updatePath($idParent, $suppressedArray, $key, $path){
+    $path = array_merge([$idParent, 'childs'],$path);
+    if (array_key_exists($idParent, $suppressedArray)){
+        $newData = updatePath($suppressedArray[$idParent], $suppressedArray, $key, $path);
+        $suppressedArray = $newData['suppressedArray'];
+        $path = $newData['path'];
+    }
+    $suppressedArray[$key] = $idParent;
+
+    return [
+        'suppressedArray' => $suppressedArray,
+        'path'            => $path
+    ];
+}
+
+function format_session_file_as_tree(){
+    $suppressedArray = [];
+    $arrayAsTree = [];
+    $suppressedArray = [];
+    foreach ($_SESSION['files'] as $key => $value){
+        $path = [$key];
+        if ($value['path'][0] !== 'u' && preg_match('/\d+(?=\/)/', $value['path'], $cor) === 1){
+            $newData = updatePath((int)$cor[0], $suppressedArray, $key, $path);
+            $suppressedArray = $newData['suppressedArray'];
+            $path = $newData['path'];
+        }
+        $arrayAsTree = set_item_in_array($path, $arrayAsTree, $value);
+    }
+
+    $_SESSION['files'] = $arrayAsTree;
+}

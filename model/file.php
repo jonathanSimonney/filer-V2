@@ -38,7 +38,6 @@ function is_name_ok($fileData){//Todo check if name correspond to current name.
     if ($fileData['name'] === '') {
         $_SESSION['errorMessage'] = 'You must put a name on your file.';
     }elseif(get_what_how($fileData['path'],'path', 'files')){
-        var_dump($fileData, get_what_how($fileData['path'],'path', 'files'));
         $_SESSION['errorMessage'] = 'The name '.$fileData['name'].' is already used in this folder. Please type another name or use the replace button.';
     }
 
