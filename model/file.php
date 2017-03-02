@@ -75,7 +75,7 @@ function replace_file($pathOldFile, $file){
 
 function download_file($fileData){
     // Specify file path.
-    $download_file =  $fileData['path'];
+    $download_file =  get_real_path_to_file($fileData);
     // Getting file extension.
     $extension = $fileData['type'];
     // For Gecko browsers
@@ -175,7 +175,7 @@ function upload_file_in_db($fileInformations){
     db_insert('files', $fileInformations, true);
 }
 
-function make_upload($file, $fileInformations){
+function get_real_path_to_file($fileInformations){
     $path = '';
     $cursor = [];
     $first = true;
@@ -193,6 +193,12 @@ function make_upload($file, $fileInformations){
         }
     }
     $path .= '/'.$fileInformations['name'].'.'.$fileInformations['type'];
+
+    return $path;
+}
+
+function make_upload($file, $fileInformations){
+    $path = get_real_path_to_file($fileInformations);
 
     if (upload_file_in_folder($file, $path)){
         upload_file_in_db($fileInformations);
