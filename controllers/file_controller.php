@@ -43,8 +43,9 @@ function rename_action(){
     if ($_SERVER['REQUEST_METHOD'] === 'POST'){
         $fileData = get_file_data($_POST['notForUser']);
         if (user_can_access($fileData)){
-            if (requiredField('name')){
-                rename_file($fileData);
+            $newFileData = format_new_file_data($fileData);
+            if (is_name_ok($newFileData)){
+                rename_file($fileData, $newFileData);
             }
         }
     }else{
@@ -68,8 +69,11 @@ function remove_action(){
 }
 
 function add_folder_action(){
-    if (requiredField('name')){
-        $name = urlencode($_POST['name']);
-        //db_insert('files',[])
+    $folderInformations = format_folder_info($_POST['name']);
+    if (is_name_ok($folderInformations)) {
+        add_folder($folderInformations);
     }
+
+    header('Location: ?action=home');
+    exit();
 }

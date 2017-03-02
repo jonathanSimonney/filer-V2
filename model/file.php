@@ -10,7 +10,7 @@ function get_file_data($fileId){
 function suppress_file($fileData){
     unlink($fileData['path']);
     db_suppress('files',$fileData['id']);
-    session_storage_delete($fileData['id']);
+    session_delete($fileData['id']);
 }
 
 function format_new_file_data($oldFileData){
@@ -18,16 +18,29 @@ function format_new_file_data($oldFileData){
 
     //following regexp is supposed to select the oldFileName only if it is followed by its type with nothing behind.
     $newFileData['path'] = preg_replace('/'.preg_quote($oldFileData['name'], NULL).'(?=\.'.$oldFileData['type'].'(?!=.))/', $newFileData['name'], $oldFileData['path']);
-    echo $newFileData['path'].'<br>';
-    echo '/'.preg_quote($oldFileData['name'], NULL).'(?=\.'.$oldFileData['type'].'(?!=.))/';
     return $newFileData;
 }
 
-function rename_file($oldFileData){
-    $newFileData = format_new_file_data($oldFileData);
+function rename_file($oldFileData, $newFileData){
     rename($oldFileData['path'], $newFileData['path']);
     db_update('files', $oldFileData['id'], $newFileData);
-    session_storage_file_update($oldFileData['id'], $newFileData);
+    session_file_update($oldFileData['id'], $newFileData);
+}
+
+function is_name_ok($fileData){
+    $_SESSION['errorMessage'] = '';
+
+    if ($fileData['name'] === '') {
+        $_SESSION['errorMessage'] = 'You must put a name on your file.';
+    }elseif(get_what_how($fileData['path'],'path', 'files')){
+        $_SESSION['errorMessage'] = 'The name '.$fileData['name'].' is already used in this folder. Please type another name or use the replace button.';
+    }
+
+    if ($_SESSION['errorMessage'] === ''){
+        return true;
+    }else{
+        return false;
+    }
 }
 
 function is_new_file_ok($oldFileData){
@@ -85,18 +98,26 @@ function get_file_type($file){
     return $type;
 }
 
-function format_file_info($file, $nameFile, $is_file = true){
-    if ($is_file){
-        $type = get_file_type($file);
-    }else{
-        $type = '';
-    }
+function format_file_info($file, $nameFile){
+    $type = get_file_type($file);
+
 
     $nameFile = format_file_name($nameFile, '.'.$type);
     $pathFile = 'uploads/'.$_SESSION['currentUser']['data']['id'].'/'.$nameFile.'.'.$type;
 
     return [
         'type' => $type,
+        'name' => $nameFile,
+        'path' => $pathFile
+    ];
+}
+
+function format_folder_info($nameFile){
+    $nameFile = urlencode($nameFile);
+    $pathFile = 'uploads/'.$_SESSION['currentUser']['data']['id'].'/'.$nameFile;
+
+    return [
+        'type' => '',
         'name' => $nameFile,
         'path' => $pathFile
     ];
@@ -137,6 +158,13 @@ function upload_file_in_db($fileInformations){
 function make_upload($file, $fileInformations){
     if (upload_file_in_folder($file, $fileInformations)){
         upload_file_in_db($fileInformations);
-        upload_file_in_session_storage($fileInformations);
+        upload_file_in_session($fileInformations);
     }
+}
+
+function add_folder($folderInformations){
+    echo $folderInformations['path'].'/'.$folderInformations['name'];
+    mkdir($folderInformations['path']);
+    upload_file_in_db($folderInformations);
+    upload_file_in_session($folderInformations);
 }
