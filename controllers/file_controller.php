@@ -81,7 +81,8 @@ function add_folder_action(){
 function open_action(){
     $folderInformations = get_file_data($_GET['fileId']);
     if (user_can_access($folderInformations)){
-        array_push($_SESSION['location'], $folderInformations['id'], 'childs');
+        array_push($_SESSION['location']['array'], $folderInformations['id'], 'childs');
+        $_SESSION['location']['simple'] = $folderInformations['id'];
     }
     header('Location: ?action=home');
     exit();

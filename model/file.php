@@ -3,8 +3,10 @@
 require_once 'model/db.php';
 require_once 'model/session.php';
 
+//var_dump($_SESSION['files'], $_SESSION['location']);
+
 function get_file_data($fileId){
-    return get_what_how($fileId, 'id', 'files')[0];
+    return $_SESSION['location']['files'][$fileId];
 }
 
 function suppress_file($fileData){
@@ -114,7 +116,12 @@ function format_file_info($file, $nameFile){
 
 
     $nameFile = format_file_name($nameFile, '.'.$type);
-    $pathFile = 'uploads/'.$_SESSION['currentUser']['data']['id'].'/'.$nameFile.'.'.$type;
+    if ($_SESSION['location']['simple'] === 'root'){
+        $pathFile = 'uploads/'.$_SESSION['currentUser']['data']['id'].'/'.$nameFile.'.'.$type;
+    }else{
+        $pathFile = (string)$_SESSION['location']['simple'].'/'.$nameFile.'.'.$type;
+    }
+
 
     return [
         'type' => $type,
@@ -139,8 +146,10 @@ function is_upload_possible($file, $fileInformations){
 
     if ($fileInformations['name'] === '') {
         $_SESSION['errorMessage'] = 'You must put a name on your file.';
-    }elseif(get_what_how($fileInformations['path'],'path', 'files')){
-        $_SESSION['errorMessage'] = 'The name '.$fileInformations['name'].' is already used for one of your files. Please type another name or use the replace button.';
+    }elseif($_SESSION['location']['files'] !== null){
+        if (array_key_exists($fileInformations['path'], make_inferior_key_index($_SESSION['location']['files'], 'path'))){
+            $_SESSION['errorMessage'] = 'The name '.$fileInformations['name'].' is already used for one of your files. Please type another name or use the replace button.';
+        }
     }elseif(empty($file['name'])){
         $_SESSION['errorMessage'] = 'You must choose a file to upload.';
     }
@@ -152,8 +161,8 @@ function is_upload_possible($file, $fileInformations){
     }
 }
 
-function upload_file_in_folder($file, $fileInformations){
-    if (!move_uploaded_file($file['tmp_name'], $fileInformations['path'])){
+function upload_file_in_folder($file, $path){
+    if (!move_uploaded_file($file['tmp_name'], $path)){
         $_SESSION['errorMessage'] = "your file wasn't uploaded. Please try seeing if your username is a valid one.";
         return false;
     }else{
@@ -167,7 +176,25 @@ function upload_file_in_db($fileInformations){
 }
 
 function make_upload($file, $fileInformations){
-    if (upload_file_in_folder($file, $fileInformations)){
+    $path = '';
+    $cursor = [];
+    $first = true;
+    foreach ($_SESSION['location']['array'] as $key => $value){
+        $cursor[] = $value;
+        if ($key%2 === 1){
+            $addedPath = access_item_in_array($cursor, $_SESSION)['path'];
+            if ($first){
+                $first = false;
+            }else{
+                $addedPath = preg_replace('/\d+(?=\/)/','',$addedPath);
+            }
+
+            $path .= $addedPath;
+        }
+    }
+    $path .= '/'.$fileInformations['name'].'.'.$fileInformations['type'];
+
+    if (upload_file_in_folder($file, $path)){
         upload_file_in_db($fileInformations);
         upload_file_in_session($fileInformations);
     }

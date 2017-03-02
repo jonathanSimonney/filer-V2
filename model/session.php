@@ -36,7 +36,8 @@ function session_file_update($id,$fieldToUpdateData){
 function upload_file_in_session($fileInformations){
     $fileInformations['id'] = get_last_inserted_id();
     $fileInformations['user_id'] = $_SESSION['currentUser']['data']['id'];
-    $_SESSION['files'][$fileInformations['id']] = $fileInformations;
+    $_SESSION = set_item_in_array(array_merge($_SESSION['location']['array'], [$fileInformations['id']]), $_SESSION, $fileInformations);
+    var_dump($_SESSION['files'][110]['childs'], $_SESSION['location']['array'], $fileInformations);
 }
 
 function set_item_in_array($arrayPath, $arrayChanged, $value){
