@@ -29,7 +29,7 @@ function replace_action(){
         $fileData = get_file_data($_POST['notForUser']);
         if (user_can_access($fileData)){
             if (is_new_file_ok($fileData)){//Did not merge these 2 if because both implement the $_SESSION['errorMessage']
-                replace_file($fileData['path'], $_FILES['file']);
+                replace_file(get_real_path_to_file($fileData), $_FILES['file']);
             }
         }
     }else{
