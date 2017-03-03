@@ -2,7 +2,7 @@
 ?>
     <body>
         <?php
-            $link = '<a href="?action=register"><i class="fa fa-sign-in" aria-hidden="true"></i>register</a>';
+            $link = '<p> </p><a href="?action=register"><i class="fa fa-sign-in" aria-hidden="true"></i>register</a>';
             require('views/inc/header.php');
         ?>
         <button id="buttonDisplay">log in</button>

@@ -137,7 +137,12 @@ function format_file_info($file, $nameFile){
 
 function format_folder_info($nameFile){
     $nameFile = urlencode($nameFile);
-    $pathFile = 'uploads/'.$_SESSION['currentUser']['data']['id'].'/'.$nameFile;
+
+    if ($_SESSION['location']['simple'] === 'root'){
+        $pathFile = 'uploads/'.$_SESSION['currentUser']['data']['id'].'/'.$nameFile.'.';
+    }else{
+        $pathFile = (string)$_SESSION['location']['simple'].'/'.$nameFile.'.';
+    }
 
     return [
         'type' => '',
@@ -212,8 +217,7 @@ function make_upload($file, $fileInformations){
 }
 
 function add_folder($folderInformations){
-    echo $folderInformations['path'].'/'.$folderInformations['name'];
-    mkdir($folderInformations['path']);
+    mkdir(get_real_path_to_file($folderInformations['path']));
     upload_file_in_db($folderInformations);
     upload_file_in_session($folderInformations);
 }

@@ -7,9 +7,15 @@ require_once 'model/session.php';
 
 function home_action(){
     is_logged_in();
-    require('views/home.php');
     $_SESSION['location']['files'] = get_item_in_array($_SESSION['location']['array'],$_SESSION);
     $arrayFiles = $_SESSION['location']['files'];
+
+    if ($_SESSION['location']['simple'] === 'root'){
+        $link = '<p> </p><a href="?action=logout"><i class="fa fa-power-off" aria-hidden="true"></i>log&nbsp;out</a>';
+    }else{
+        $link = '<a href="?action=to_parent" class="clickable"><i class="fa fa-arrow-left" aria-hidden="true"></i></a> <a href="?action=logout"><i class="fa fa-power-off" aria-hidden="true"></i>log&nbsp;out</a>';
+    }
+    require('views/home.php');
     //var_dump($arrayFiles, $_SESSION['location'], $_SESSION['files']);
     if ($arrayFiles !== null){
         $numberForId = 0;

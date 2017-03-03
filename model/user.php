@@ -78,6 +78,5 @@ function user_login($username){
     $_SESSION['files'] = make_inferior_key_index($_SESSION['files'], 'id');
     format_session_file_as_tree();
     $_SESSION['currentUser']['loggedIn'] = true;
-    $_SESSION['location']['array'] = ['files'];
-    $_SESSION['location']['simple'] = 'root';
+    user_session_location_init();
 }

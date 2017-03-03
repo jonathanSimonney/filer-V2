@@ -13,6 +13,12 @@ function login_action(){
         }
     }else{
         require('views/login.php');
+        if (array_key_exists('currentUser', $_SESSION)){
+            if ($_SESSION['currentUser']['loggedIn']){
+                session_destroy();
+                session_start();
+            }
+        }
         $_SESSION['errorMessage'] = '';
     }
 }

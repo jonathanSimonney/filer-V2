@@ -11,7 +11,8 @@ $routes = [
     'replace'    => 'file',
     'remove'     => 'file',
     'add_folder' => 'file',
-    'open'       => 'file',
+    'open'       => 'nav',
+    'to_parent'  => 'nav',
 ];
 
 require('config/private.php');

@@ -1,7 +1,7 @@
 <?php require('views/inc/head.html');?>
     <body>
         <?php
-            $link = '<a href="?action=login"><i class="fa fa-home" aria-hidden="true"></i>log in</a>';
+            $link = '<p> </p><a href="?action=login"><i class="fa fa-home" aria-hidden="true"></i>log in</a>';
             require('views/inc/header.php');
         ?>
         <form name="signUp" method="POST" action="register.php">

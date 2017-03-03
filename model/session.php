@@ -31,7 +31,7 @@ function upload_file_in_session($fileInformations){
     $fileInformations['id'] = get_last_inserted_id();
     $fileInformations['user_id'] = $_SESSION['currentUser']['data']['id'];
     set_item_in_array(array_merge($_SESSION['location']['array'], [$fileInformations['id']]), $_SESSION, $fileInformations);
-    var_dump($_SESSION['files'][110]['childs'], $_SESSION['location']['array'], $fileInformations);
+    //var_dump($_SESSION['files'][110]['childs'], $_SESSION['location']['array'], $fileInformations);
 }
 
 function set_item_in_array($path, &$array, $value){
@@ -49,7 +49,11 @@ function set_item_in_array($path, &$array, $value){
 function get_item_in_array($path, &$array){
     $key = array_shift($path);
     if (empty($path)) {
-        return $array[$key];
+        if (array_key_exists($key, $array)){
+            return $array[$key];
+        }else{
+            return null;
+        }
     } else {
         if (!isset($array[$key]) || !is_array($array[$key])) {
             $array[$key] = array();
@@ -100,4 +104,9 @@ function format_session_file_as_tree(){
     }
 
     $_SESSION['files'] = $arrayAsTree;
+}
+
+function user_session_location_init(){
+    $_SESSION['location']['array'] = ['files'];
+    $_SESSION['location']['simple'] = 'root';
 }

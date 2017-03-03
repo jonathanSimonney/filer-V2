@@ -78,12 +78,8 @@ function add_folder_action(){
     exit();
 }
 
-function open_action(){
-    $folderInformations = get_file_data($_GET['fileId']);
-    if (user_can_access($folderInformations)){
-        array_push($_SESSION['location']['array'], $folderInformations['id'], 'childs');
-        $_SESSION['location']['simple'] = $folderInformations['id'];
-    }
-    header('Location: ?action=home');
-    exit();
-}
+/*Not much left for folder gestion : rework on how to add folder and open one, especially if it does not have a child.
+Allow drag and drop of files and folder into other folder.
+make user can go back. (..or left arrow...) DONE
+check for folder suppression with subFolder!!!
+Also : see why though all functionalities seem all right, file at root don't appear on "server" (that is my own PC)*/
