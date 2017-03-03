@@ -2,6 +2,7 @@
 
 require_once 'model/db.php';
 require_once 'model/session.php';
+require_once 'model/nav.php';
 
 //var_dump($_SESSION['files'], $_SESSION['location']);
 
@@ -9,17 +10,28 @@ function get_file_data($fileId){
     return $_SESSION['location']['files'][$fileId];
 }
 
-function suppress_file($fileData){
-    if ($fileData['type'] === ''){
-        unlink(get_real_path_to_file($fileData).'/*');
-        rmdir(get_real_path_to_file($fileData));
-    }else{
-        unlink(get_real_path_to_file($fileData));
-    }
+function suppress_recursively($fileData){
+    $currentLocation = $_SESSION['location'];
+    open_folder($fileData['id']);
+    $_SESSION['location']['files'] = get_item_in_array($_SESSION['location']['array'],$_SESSION);
 
+    foreach ($_SESSION['location']['files'] as $key => $value){
+        if ($value['type'] === ''){
+            suppress_recursively($value);
+        }else{
+            unlink(get_real_path_to_file($value));
+            db_suppress('files',$value['id']);
+        }
+    }
+    $_SESSION['location'] = $currentLocation;
+    rmdir(get_real_path_to_file($fileData));
     db_suppress('files',$fileData['id']);
+}
+
+function suppress_file($fileData){
+    suppress_recursively($fileData);
+
     unset_item_in_array(array_merge($_SESSION['location']['array'],[$fileData['id']]),$_SESSION);
-    session_delete($fileData['id']);
 }
 
 function format_new_file_data($oldFileData){

@@ -23,10 +23,6 @@ function find_corresponding_elements($superArray, $needleKey, $needleValue){
     return $ret;
 }
 
-function session_delete($id){
-    unset($_SESSION['files'][$id]);
-}
-
 function upload_file_in_session($fileInformations){
     $fileInformations['id'] = get_last_inserted_id();
     $fileInformations['user_id'] = $_SESSION['currentUser']['data']['id'];

@@ -80,7 +80,7 @@ function add_folder_action(){
 }
 
 /*Not much left for folder gestion : rework on how to add folder and open one, especially if it does not have a child. DONE!
-Allow drag and drop of files and folder into other folder.
+todo Allow drag and drop of files and folder into other folder.
 make user can go back. (..or left arrow...) DONE
-check for folder suppression with subFolder!!!
+check for folder suppression with subFolder!!! DONE
 Also : see why though all functionalities seem all right, file at root don't appear on "server" (that is my own PC) DONE*/
