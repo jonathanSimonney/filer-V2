@@ -11,13 +11,14 @@ function get_file_data($fileId){
 
 function suppress_file($fileData){
     if ($fileData['type'] === ''){
-        unlink($fileData['path'].'/*');
-        rmdir($fileData['path']);
+        unlink(get_real_path_to_file($fileData).'/*');
+        rmdir(get_real_path_to_file($fileData));
     }else{
-        unlink($fileData['path']);
+        unlink(get_real_path_to_file($fileData));
     }
 
     db_suppress('files',$fileData['id']);
+    unset_item_in_array(array_merge($_SESSION['location']['array'],[$fileData['id']]),$_SESSION);
     session_delete($fileData['id']);
 }
 
@@ -39,7 +40,7 @@ function rename_file($oldFileData, $newFileData){
 
     rename(get_real_path_to_file($oldFileData), get_real_path_to_file($newFileData));
     db_update('files', $oldFileData['id'], $newFileData);
-    $_SESSION = set_item_in_array(array_merge($_SESSION['location']['array'],[$oldFileData['id']]),$_SESSION,$newFileData);
+    set_item_in_array(array_merge($_SESSION['location']['array'],[$oldFileData['id']]),$_SESSION,$newFileData);
 }
 
 function is_name_ok($fileData){//Todo check if name correspond to current name.

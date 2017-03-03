@@ -27,34 +27,47 @@ function session_delete($id){
     unset($_SESSION['files'][$id]);
 }
 
-function session_file_update($id,$fieldToUpdateData){
-    foreach ($fieldToUpdateData as $modifKey => $newValue){
-        $_SESSION['files'][$id][$modifKey] = $newValue;
-    }
-}
-
 function upload_file_in_session($fileInformations){
     $fileInformations['id'] = get_last_inserted_id();
     $fileInformations['user_id'] = $_SESSION['currentUser']['data']['id'];
-    $_SESSION = set_item_in_array(array_merge($_SESSION['location']['array'], [$fileInformations['id']]), $_SESSION, $fileInformations);
+    set_item_in_array(array_merge($_SESSION['location']['array'], [$fileInformations['id']]), $_SESSION, $fileInformations);
     var_dump($_SESSION['files'][110]['childs'], $_SESSION['location']['array'], $fileInformations);
 }
 
-function set_item_in_array($arrayPath, $arrayChanged, $value){
-    $temp = &$arrayChanged;
-    foreach($arrayPath as $key) {
-        $temp = &$temp[$key];
+function set_item_in_array($path, &$array, $value){
+    $key = array_shift($path);
+    if (empty($path)) {
+        $array[$key] = $value;
+    } else {
+        if (!isset($array[$key]) || !is_array($array[$key])) {
+            $array[$key] = array();
+        }
+        set_item_in_array( $path, $array[$key], $value);
     }
-    $temp = $value;
-    return $arrayChanged;
 }
 
-function get_item_in_array($arrayPath, $array){
-    $temp = &$array;
-    foreach($arrayPath as $key) {
-        $temp = &$temp[$key];
+function get_item_in_array($path, &$array){
+    $key = array_shift($path);
+    if (empty($path)) {
+        return $array[$key];
+    } else {
+        if (!isset($array[$key]) || !is_array($array[$key])) {
+            $array[$key] = array();
+        }
+        return get_item_in_array( $path, $array[$key]);
     }
-    return $temp;
+}
+
+function unset_item_in_array($path, &$array){
+    $key = array_shift($path);
+    if (empty($path)) {
+        unset($array[$key]);
+    } else {
+        if (!isset($array[$key]) || !is_array($array[$key])) {
+            $array[$key] = array();
+        }
+        unset_item_in_array( $path, $array[$key]);
+    }
 }
 
 function updatePath($idParent, $suppressedArray, $key, $path){
@@ -83,7 +96,7 @@ function format_session_file_as_tree(){
             $suppressedArray = $newData['suppressedArray'];
             $path = $newData['path'];
         }
-        $arrayAsTree = set_item_in_array($path, $arrayAsTree, $value);
+        set_item_in_array($path, $arrayAsTree, $value);
     }
 
     $_SESSION['files'] = $arrayAsTree;
