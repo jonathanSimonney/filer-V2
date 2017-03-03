@@ -139,9 +139,9 @@ function format_folder_info($nameFile){
     $nameFile = urlencode($nameFile);
 
     if ($_SESSION['location']['simple'] === 'root'){
-        $pathFile = 'uploads/'.$_SESSION['currentUser']['data']['id'].'/'.$nameFile.'.';
+        $pathFile = 'uploads/'.$_SESSION['currentUser']['data']['id'].'/'.$nameFile;
     }else{
-        $pathFile = (string)$_SESSION['location']['simple'].'/'.$nameFile.'.';
+        $pathFile = (string)$_SESSION['location']['simple'].'/'.$nameFile;
     }
 
     return [
@@ -186,23 +186,27 @@ function upload_file_in_db($fileInformations){
 }
 
 function get_real_path_to_file($fileInformations){
-    $path = '';
-    $cursor = [];
-    $first = true;
-    foreach ($_SESSION['location']['array'] as $key => $value){
-        $cursor[] = $value;
-        if ($key%2 === 1){
-            $addedPath = get_item_in_array($cursor, $_SESSION)['path'];
-            if ($first){
-                $first = false;
-            }else{
-                $addedPath = preg_replace('/\d+(?=\/)/','',$addedPath);
-            }
+    if ($_SESSION['location']['simple'] === 'root'){
+        $path = $fileInformations['path'];
+    }else{
+        $path = '';
+        $cursor = [];
+        $first = true;
+        foreach ($_SESSION['location']['array'] as $key => $value){
+            $cursor[] = $value;
+            if ($key%2 === 1){
+                $addedPath = get_item_in_array($cursor, $_SESSION)['path'];
+                if ($first){
+                    $first = false;
+                }else{
+                    $addedPath = preg_replace('/\d+(?=\/)/','',$addedPath);
+                }
 
-            $path .= $addedPath;
+                $path .= $addedPath;
+            }
         }
+        $path .= '/'.$fileInformations['name'].'.'.$fileInformations['type'];
     }
-    $path .= '/'.$fileInformations['name'].'.'.$fileInformations['type'];
 
     return $path;
 }
@@ -217,7 +221,7 @@ function make_upload($file, $fileInformations){
 }
 
 function add_folder($folderInformations){
-    mkdir(get_real_path_to_file($folderInformations['path']));
+    mkdir(get_real_path_to_file($folderInformations));
     upload_file_in_db($folderInformations);
     upload_file_in_session($folderInformations);
 }

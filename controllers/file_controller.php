@@ -71,6 +71,7 @@ function remove_action(){
 function add_folder_action(){
     $folderInformations = format_folder_info($_POST['name']);
     if (is_name_ok($folderInformations)) {
+        //var_dump($folderInformations);
         add_folder($folderInformations);
     }
 
@@ -78,8 +79,8 @@ function add_folder_action(){
     exit();
 }
 
-/*Not much left for folder gestion : rework on how to add folder and open one, especially if it does not have a child.
+/*Not much left for folder gestion : rework on how to add folder and open one, especially if it does not have a child. DONE!
 Allow drag and drop of files and folder into other folder.
 make user can go back. (..or left arrow...) DONE
 check for folder suppression with subFolder!!!
-Also : see why though all functionalities seem all right, file at root don't appear on "server" (that is my own PC)*/
+Also : see why though all functionalities seem all right, file at root don't appear on "server" (that is my own PC) DONE*/
