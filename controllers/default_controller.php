@@ -13,7 +13,7 @@ function home_action(){
     if ($_SESSION['location']['simple'] === 'root'){
         $link = '<p> </p><a href="?action=logout"><i class="fa fa-power-off" aria-hidden="true"></i>log&nbsp;out</a>';
     }else{
-        $link = '<a href="?action=to_parent" class="clickable"><i class="fa fa-arrow-left" aria-hidden="true"></i></a> <a href="?action=logout"><i class="fa fa-power-off" aria-hidden="true"></i>log&nbsp;out</a>';
+        $link = '<a href="?action=to_parent" class="precedent clickable"><i class="fa fa-arrow-left" aria-hidden="true"></i></a> <a href="?action=logout"><i class="fa fa-power-off" aria-hidden="true"></i>log&nbsp;out</a>';
     }
     require('views/home.php');
     //var_dump($arrayFiles, $_SESSION['location'], $_SESSION['files']);

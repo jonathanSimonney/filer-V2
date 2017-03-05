@@ -81,21 +81,29 @@ function add_folder_action(){
 
 function move_action(){
     $movedElementData = get_file_data($_GET['idMovedElement']);
-    $destinationFolderData = get_file_data($_GET['idDestination']);
-    if (user_can_access($movedElementData) && user_can_access($destinationFolderData)){
+    $toParent = false;
+    if ($_GET['idDestination'] === 'precedent'){
+        $toParent = true;
+
+        $currentLocation = $_SESSION['location'];
+        close_current_folder();
+
+        $destinationFolderData = get_file_data($_SESSION['location']['simple']);
+        $_SESSION['location'] = $currentLocation;
+    }else{
+        $destinationFolderData = get_file_data($_GET['idDestination']);
+    }
+    if (user_can_access($movedElementData) && user_can_access($destinationFolderData, true)){
         $newPath = generate_new_path($movedElementData, $destinationFolderData);
 
         db_update('files', $movedElementData['id'],['path' => $newPath]);
-        move_in_session($movedElementData, $destinationFolderData, $newPath);
-        move_on_server($movedElementData, $destinationFolderData);
+        move_in_session($movedElementData, $destinationFolderData, $newPath, $toParent);
+        move_on_server($movedElementData, $destinationFolderData, $toParent);
     }
+
 
     header('Location: ?action=home');
     exit();
 }
 
-/*Not much left for folder gestion : rework on how to add folder and open one, especially if it does not have a child. DONE!
-todo Allow drag and drop of files and folder into other folder.
-make user can go back. (..or left arrow...) DONE
-check for folder suppression with subFolder!!! DONE
-Also : see why though all functionalities seem all right, file at root don't appear on "server" (that is my own PC) DONE*/
+//todo allow movement to precedent folder.

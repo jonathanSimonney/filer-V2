@@ -25,6 +25,7 @@ window.onload = function(){
 
     var fileName = document.querySelectorAll('.name');
     var folder = document.querySelectorAll('.folder');
+    var precedent = document.querySelector('.precedent');
 
     for (var i in fileName){
         if (fileName[i].style !== undefined){
@@ -39,6 +40,10 @@ window.onload = function(){
         if (folder[i].style !== undefined){
             linkFolderDragAndDropEvent(folder[i]);
         }
+    }
+
+    if (precedent !== null){
+        linkArrowDragAndDropEvent(precedent);
     }
 
     //D&D handler

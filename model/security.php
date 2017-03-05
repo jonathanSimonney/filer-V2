@@ -1,7 +1,9 @@
 <?php
 
-function user_can_access($fileData){
-    if($fileData['user_id'] === $_SESSION['currentUser']['data']['id']){
+function user_can_access($fileData, $canBeRoot = false){
+    if ($fileData === 'root' && $canBeRoot){
+        return true;
+    }elseif($fileData['user_id'] === $_SESSION['currentUser']['data']['id']){
         return true;
     }else{
         //todo : writ in .log, make different errorMessage etc.

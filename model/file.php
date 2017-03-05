@@ -7,7 +7,11 @@ require_once 'model/nav.php';
 //var_dump($_SESSION['files'], $_SESSION['location']);
 
 function get_file_data($fileId){
-    return $_SESSION['location']['files'][$fileId];
+    if ($fileId !== 'root'){
+        return $_SESSION['location']['files'][$fileId];
+    }else{
+        return 'root';
+    }
 }
 
 function suppress_recursively($fileData){
@@ -204,7 +208,9 @@ function upload_file_in_db($fileInformations){
 }
 
 function get_real_path_to_file($fileInformations){
-    if ($_SESSION['location']['simple'] === 'root'){
+    if ($fileInformations === 'root'){
+        $path = 'uploads/'.$_SESSION['currentUser']['data']['id'];
+    }elseif ($_SESSION['location']['simple'] === 'root'){
         $path = $fileInformations['path'];
     }else{
         $path = '';
@@ -245,9 +251,13 @@ function add_folder($folderInformations){
 }
 
 function generate_new_path($movedElementData, $destinationData){
-    $newPath = $destinationData['id'].'/'.get_name_with_extent($movedElementData);
+    if ($destinationData === 'root'){
+        $beginning = 'uploads/'.$_SESSION['currentUser']['data']['id'];
+    }else{
+        $beginning = $destinationData['id'];
+    }
 
-    return $newPath;
+    return $beginning.'/'.get_name_with_extent($movedElementData);
 }
 
 function get_name_with_extent($fileOrFolderData){
@@ -259,6 +269,15 @@ function get_name_with_extent($fileOrFolderData){
     return $name;
 }
 
-function move_on_server($movedElementData, $destinationFolderData){
-    rename(get_real_path_to_file($movedElementData), get_real_path_to_file($destinationFolderData).'/'.get_name_with_extent($movedElementData));
+function move_on_server($movedElementData, $destinationFolderData, $toParent = false){
+    $currentLocation = $_SESSION['location'];
+
+    $currentPath = get_real_path_to_file($movedElementData);
+    if ($toParent){
+        close_current_folder();
+    }
+
+    rename($currentPath, get_real_path_to_file($destinationFolderData).'/'.get_name_with_extent($movedElementData));
+
+    $_SESSION['location'] = $currentLocation;
 }

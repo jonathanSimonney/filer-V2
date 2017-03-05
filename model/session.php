@@ -1,4 +1,5 @@
 <?php
+require_once 'model/nav.php';
 
 function make_inferior_key_index($superArray, $inferior_key){
     $new_array = [];
@@ -113,9 +114,24 @@ function user_session_location_init(){
     $_SESSION['location']['simple'] = 'root';
 }
 
-function move_in_session($movedElementData, $destinationFolderData, $newPath){
+function get_parent_location(){
+    $currentLocation = $_SESSION['location'];
+    close_current_folder();
+    $parentLocation = $_SESSION['location'];
+    $_SESSION['location'] = $currentLocation;
+
+    return $parentLocation;
+}
+
+function move_in_session($movedElementData, $destinationFolderData, $newPath, $toPrecedent = false){
     $copiedElement = get_item_in_array($_SESSION['location']['array'], $_SESSION)[$movedElementData['id']];
     $copiedElement['path'] = $newPath;
     unset_item_in_array(array_merge($_SESSION['location']['array'], [$movedElementData['id']]), $_SESSION);
-    set_item_in_array(array_merge($_SESSION['location']['array'], [$destinationFolderData['id'], 'childs', $movedElementData['id']]), $_SESSION, $copiedElement);
+
+    if ($toPrecedent){
+        $parentLocation = get_parent_location();
+        set_item_in_array(array_merge($parentLocation['array'], [$movedElementData['id']]),$_SESSION, $copiedElement);
+    }else{
+        set_item_in_array(array_merge($_SESSION['location']['array'], [$destinationFolderData['id'], 'childs', $movedElementData['id']]), $_SESSION, $copiedElement);
+    }
 }

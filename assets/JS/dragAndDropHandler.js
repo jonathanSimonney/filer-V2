@@ -39,4 +39,20 @@ function linkFolderDragAndDropEvent(folder) {
     })
 }
 
+function linkArrowDragAndDropEvent(arrow) {
+    arrow.addEventListener('dragover', function (e) {
+        e.preventDefault();
+        addClassName(this, 'dragover');
+    });
+
+    arrow.addEventListener('dragleave', function () {
+        this.className = arrow.className.replace('dragover', '');
+    });
+
+    arrow.addEventListener('drop', function () {
+        this.className = this.className.replace('dragover', '');
+        moveAIntoB(idMovedElement, 'precedent');
+    })
+}
+
 var idMovedElement = 0;

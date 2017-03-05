@@ -185,3 +185,16 @@ body{
     display: flex;
     flex-direction: row;
 }
+
+.header{
+    position: fixed;
+    top:0;
+}
+
+body>*:nth-child(2){
+    margin-top: 12vh;
+}
+
+.precedent.dragover{
+    color:white;
+}
