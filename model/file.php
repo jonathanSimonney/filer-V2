@@ -281,3 +281,19 @@ function move_on_server($movedElementData, $destinationFolderData, $toParent = f
 
     $_SESSION['location'] = $currentLocation;
 }
+
+function order_between_files_and_folder($arrayToOrder){
+    $arrayFiles = [];
+    $arrayFolders = [];
+
+    foreach ($arrayToOrder as $key => $value){
+        if ($value['type'] === ''){
+            $arrayFolders[] = $value;
+        }else{
+            $arrayFiles[] = $value;
+        }
+        $arrayToOrder = array_merge($arrayFolders, $arrayFiles);
+    }
+
+    return $arrayToOrder;
+}

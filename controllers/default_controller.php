@@ -8,7 +8,7 @@ require_once 'model/session.php';
 function home_action(){
     is_logged_in();
     $_SESSION['location']['files'] = get_item_in_array($_SESSION['location']['array'],$_SESSION);
-    $arrayFiles = $_SESSION['location']['files'];
+    $arrayElements = $_SESSION['location']['files'];
 
     if ($_SESSION['location']['simple'] === 'root'){
         $link = '<p> </p><a href="?action=logout"><i class="fa fa-power-off" aria-hidden="true"></i>log&nbsp;out</a>';
@@ -17,9 +17,12 @@ function home_action(){
     }
     require('views/home.php');
     //var_dump($arrayFiles, $_SESSION['location'], $_SESSION['files']);
-    if ($arrayFiles !== null){
+    if ($arrayElements !== null){
         $numberForId = 0;
-        foreach ($arrayFiles as $key => $value){
+
+        $arrayElements = order_between_files_and_folder($arrayElements);
+
+        foreach ($arrayElements as $key => $value){
             $numberForId++;
             if ($value['type'] === ''){
                 require 'views/inc/folder.php';
@@ -27,6 +30,7 @@ function home_action(){
                 require 'views/inc/file.php';
             }
         }
+
         for ($i = 0;$i !== 2;$i++){
             require 'views/inc/divClosure.html';
         }
