@@ -15,21 +15,29 @@ function suppress_recursively($fileData){
     open_folder($fileData['id']);
     $_SESSION['location']['files'] = get_item_in_array($_SESSION['location']['array'],$_SESSION);
 
-    foreach ($_SESSION['location']['files'] as $key => $value){
-        if ($value['type'] === ''){
-            suppress_recursively($value);
-        }else{
-            unlink(get_real_path_to_file($value));
-            db_suppress('files',$value['id']);
+    if ($_SESSION['location']['files'] !== null){
+        foreach ($_SESSION['location']['files'] as $key => $value){
+            if ($value['type'] === ''){
+                suppress_recursively($value);
+            }else{
+                unlink(get_real_path_to_file($value));
+                db_suppress('files',$value['id']);
+            }
         }
     }
+
     $_SESSION['location'] = $currentLocation;
     rmdir(get_real_path_to_file($fileData));
     db_suppress('files',$fileData['id']);
 }
 
 function suppress_file($fileData){
-    suppress_recursively($fileData);
+    if ($fileData['type'] !== ''){
+        unlink(get_real_path_to_file($fileData));
+        db_suppress('files',$fileData['id']);
+    }else{
+        suppress_recursively($fileData);
+    }
 
     unset_item_in_array(array_merge($_SESSION['location']['array'],[$fileData['id']]),$_SESSION);
 }
@@ -37,7 +45,7 @@ function suppress_file($fileData){
 function format_new_file_data($oldFileData){
     $newFileData['name'] = format_file_name($_POST['name'], $oldFileData['type']);
     if ($oldFileData['type'] === ''){
-        $newFileData['path'] = preg_replace('/'.preg_quote($oldFileData['name'], NULL).'(?!=.)/', $newFileData['name'], $oldFileData['path']);
+        $newFileData['path'] = preg_replace('/'.preg_quote($oldFileData['name'], NULL).'(?!.)/', $newFileData['name'], $oldFileData['path']);
     }else{
         //following regexp is supposed to select the oldFileName only if it is followed by its type with nothing behind.
         $newFileData['path'] = preg_replace('/'.preg_quote($oldFileData['name'], NULL).'(?=\.'.$oldFileData['type'].'(?!=.))/', $newFileData['name'], $oldFileData['path']);
@@ -112,7 +120,7 @@ function download_file($fileData){
 }
 
 function format_file_name($nameFile, $type){
-    $nameFile = preg_replace('/'.$type.'(?!=.)/', '', $nameFile);
+    $nameFile = preg_replace('/'.$type.'(?!.)/', '', $nameFile);
     $nameFile = urlencode($nameFile);
     return $nameFile;
 }
@@ -132,7 +140,7 @@ function format_file_info($file, $nameFile){
     $type = get_file_type($file);
 
 
-    $nameFile = format_file_name($nameFile, '.'.$type);
+    $nameFile = format_file_name($nameFile, '\.'.$type);
     if ($_SESSION['location']['simple'] === 'root'){
         $pathFile = 'uploads/'.$_SESSION['currentUser']['data']['id'].'/'.$nameFile.'.'.$type;
     }else{
@@ -168,11 +176,9 @@ function is_upload_possible($file, $fileInformations){
 
     if ($fileInformations['name'] === '') {
         $_SESSION['errorMessage'] = 'You must put a name on your file.';
-    }elseif($_SESSION['location']['files'] !== null){
-        if (array_key_exists($fileInformations['path'], make_inferior_key_index($_SESSION['location']['files'], 'path'))){
-            $_SESSION['errorMessage'] = 'The name '.$fileInformations['name'].' is already used for one of your files. Please type another name or use the replace button.';
-        }
-    }elseif(empty($file['name'])){
+    }elseif (array_key_exists($fileInformations['path'], make_inferior_key_index($_SESSION['location']['files'], 'path'))){
+        $_SESSION['errorMessage'] = 'The name '.$fileInformations['name'].' is already used for one of your files. Please type another name or use the replace button.';
+    }elseif($file['name'] === ''){
         $_SESSION['errorMessage'] = 'You must choose a file to upload.';
     }
 
@@ -217,7 +223,7 @@ function get_real_path_to_file($fileInformations){
                 $path .= $addedPath;
             }
         }
-        $path .= '/'.$fileInformations['name'].'.'.$fileInformations['type'];
+        $path .= '/'.get_name_with_extent($fileInformations);
     }
 
     return $path;
@@ -236,4 +242,23 @@ function add_folder($folderInformations){
     mkdir(get_real_path_to_file($folderInformations));
     upload_file_in_db($folderInformations);
     upload_file_in_session($folderInformations);
+}
+
+function generate_new_path($movedElementData, $destinationData){
+    $newPath = $destinationData['id'].'/'.get_name_with_extent($movedElementData);
+
+    return $newPath;
+}
+
+function get_name_with_extent($fileOrFolderData){
+    $name = $fileOrFolderData['name'];
+    if ($fileOrFolderData['type'] !== ''){
+        $name .= '.'.$fileOrFolderData['type'];
+    }
+
+    return $name;
+}
+
+function move_on_server($movedElementData, $destinationFolderData){
+    rename(get_real_path_to_file($movedElementData), get_real_path_to_file($destinationFolderData).'/'.get_name_with_extent($movedElementData));
 }

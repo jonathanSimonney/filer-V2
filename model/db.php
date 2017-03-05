@@ -124,7 +124,6 @@ function db_update($table, $id, $fieldToUpdateData){
 function db_suppress($table, $id){
     $dbh = get_dbh();
     $query = 'DELETE FROM `'.$table.'` WHERE `'.$table.'`.`id` = '.$id.';';
-    echo $query;
     $sth = $dbh->prepare($query);
     $sth->execute();
 }

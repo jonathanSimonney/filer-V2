@@ -21,6 +21,28 @@ window.onload = function(){
     var buttonUpload = document.getElementById('upload');
     var buttonFolder = document.getElementById('folder');
 
+    //D&D handler
+
+    var fileName = document.querySelectorAll('.name');
+    var folder = document.querySelectorAll('.folder');
+
+    for (var i in fileName){
+        if (fileName[i].style !== undefined){
+            fileName[i].draggable = true;
+            fileName[i].addEventListener('dragstart', function (e) {
+                dragFileOrFolder(this, e);
+            })
+        }
+    }
+
+    for (var i in folder){
+        if (folder[i].style !== undefined){
+            linkFolderDragAndDropEvent(folder[i]);
+        }
+    }
+
+    //D&D handler
+
     buttonFolder.onclick = function () {
         toggleFormState(document.querySelector('.addFolder'));
     };

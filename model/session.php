@@ -78,6 +78,7 @@ function updatePath($idParent, $suppressedArray, $key, $path){
         $path = $newData['path'];
     }
     $suppressedArray[$key] = $idParent;
+    //var_dump($suppressedArray, $path);
 
     return [
         'suppressedArray' => $suppressedArray,
@@ -96,6 +97,11 @@ function format_session_file_as_tree(){
             $suppressedArray = $newData['suppressedArray'];
             $path = $newData['path'];
         }
+
+        if (get_item_in_array($path, $arrayAsTree) !== null){
+            $value = array_merge(get_item_in_array($path, $arrayAsTree), $value);
+        }
+
         set_item_in_array($path, $arrayAsTree, $value);
     }
 
@@ -105,4 +111,11 @@ function format_session_file_as_tree(){
 function user_session_location_init(){
     $_SESSION['location']['array'] = ['files'];
     $_SESSION['location']['simple'] = 'root';
+}
+
+function move_in_session($movedElementData, $destinationFolderData, $newPath){
+    $copiedElement = get_item_in_array($_SESSION['location']['array'], $_SESSION)[$movedElementData['id']];
+    $copiedElement['path'] = $newPath;
+    unset_item_in_array(array_merge($_SESSION['location']['array'], [$movedElementData['id']]), $_SESSION);
+    set_item_in_array(array_merge($_SESSION['location']['array'], [$destinationFolderData['id'], 'childs', $movedElementData['id']]), $_SESSION, $copiedElement);
 }

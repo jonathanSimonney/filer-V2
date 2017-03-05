@@ -80,7 +80,18 @@ function add_folder_action(){
 }
 
 function move_action(){
-    var_dump($_GET);
+    $movedElementData = get_file_data($_GET['idMovedElement']);
+    $destinationFolderData = get_file_data($_GET['idDestination']);
+    if (user_can_access($movedElementData) && user_can_access($destinationFolderData)){
+        $newPath = generate_new_path($movedElementData, $destinationFolderData);
+
+        db_update('files', $movedElementData['id'],['path' => $newPath]);
+        move_in_session($movedElementData, $destinationFolderData, $newPath);
+        move_on_server($movedElementData, $destinationFolderData);
+    }
+
+    header('Location: ?action=home');
+    exit();
 }
 
 /*Not much left for folder gestion : rework on how to add folder and open one, especially if it does not have a child. DONE!
