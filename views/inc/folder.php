@@ -1,12 +1,18 @@
 <?php
 echo "<div class='icon folder'>";
 ?>
+<input type="number" name="notForUser" class="notForUser" value=<?php echo "".$value['id'].""; ?>>
 <br><br>
-<a href="?action=open&fileId=<?php echo $value['id'] ?>" class="download clickable"><i class="fa fa-folder" aria-hidden="true"></i></a>
+<a href="?action=open&fileId=<?php echo $value['id'] ?>" class="download clickable">
+    <i class="fa fa-folder" aria-hidden="true"></i>
+</a>
 <button class="rename clickable">rename</button>
 <i class="fa fa-trash delete clickable" aria-hidden="true"></i>
 
-<span class="name"><?php echo $value['name']; ?></span>
+<span class="name">
+    <input type="number" name="notForUser" class="notForUser" value=<?php echo "".$value['id'].""; ?>>
+    <?php echo $value['name']; ?>
+</span>
 
 <form class="renameForm toHide" action="?action=rename" method="post">
     <label for=<?php

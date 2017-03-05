@@ -39,5 +39,6 @@
         </div class="creationSpace">
 
         <script src="assets/JS/files.js"></script>
+        <script src="assets/JS/dragAndDropHandler.js"></script>
 
         <div class='centeringDiv blueBackground'><div class='listFilesUser'>

@@ -7,7 +7,10 @@
     <button class="rename clickable">rename</button>
     <i class="fa fa-trash delete clickable" aria-hidden="true"></i>
 
-    <span class="name"><?php echo $value['name']; ?><span class="extFile"><?php echo ".".$value["type"]; ?></span></span>
+    <span class="name">
+        <input type="number" name="notForUser" class="notForUser" value=<?php echo "".$value['id'].""; ?>>
+        <?php echo $value['name']; ?><span class="extFile"><?php echo ".".$value["type"]; ?></span>
+    </span>
 
     <form class="replaceForm toHide" action="?action=replace" method="post" enctype="multipart/form-data">
         <input type="file" name="file">

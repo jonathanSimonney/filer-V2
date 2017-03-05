@@ -79,6 +79,10 @@ function add_folder_action(){
     exit();
 }
 
+function move_action(){
+    var_dump($_GET);
+}
+
 /*Not much left for folder gestion : rework on how to add folder and open one, especially if it does not have a child. DONE!
 todo Allow drag and drop of files and folder into other folder.
 make user can go back. (..or left arrow...) DONE
