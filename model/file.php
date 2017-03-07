@@ -8,7 +8,12 @@ require_once 'model/nav.php';
 
 function get_file_data($fileId){
     if ($fileId !== 'root'){
-        return $_SESSION['location']['files'][$fileId];
+        if (array_key_exists($fileId, $_SESSION['location']['files'])){
+            return $_SESSION['location']['files'][$fileId];
+        }else{
+            return ['user_id' => 0];//since this key shan't be displayed...
+        }
+
     }else{
         return 'root';
     }
@@ -195,7 +200,7 @@ function is_upload_possible($file, $fileInformations){
 
 function upload_file_in_folder($file, $path){
     if (!move_uploaded_file($file['tmp_name'], $path)){
-        $_SESSION['errorMessage'] = "your file wasn't uploaded. Please try seeing if your username is a valid one.";
+        $_SESSION['errorMessage'] = "your file wasn't uploaded. Please check it is not too big (max upload size is of 4MB).";
         return false;
     }else{
         return true;
@@ -296,4 +301,57 @@ function order_between_files_and_folder($arrayToOrder){
     }
 
     return $arrayToOrder;
+}
+
+function setCorrectHeader($type){
+    switch ($type){
+        case 'txt' :
+            header('Content-Type: text/'.$type);
+            break;
+        case 'jpg' :
+        case 'jpeg':
+        case 'gif' :
+        case 'ani' :
+        case 'bmp' :
+        case 'cal' :
+        case 'fax' :
+        case 'img' :
+        case 'jbg' :
+        case 'jpe' :
+        case 'mac' :
+        case 'pbm' :
+        case 'pcd' :
+        case 'pcx' :
+        case 'pct' :
+        case 'pgm' :
+        case 'png' :
+        case 'ppm' :
+        case 'psd' :
+        case 'ras' :
+        case 'tga' :
+        case 'tiff':
+        case 'wmf' :
+            header('Content-Type: image/'.$type);
+            break;
+        case 'mp3':
+            header('Content-Type: audio/'.$type);
+            break;
+        case 'avi':
+        case 'asf':
+        case 'mov':
+        case 'qt':
+        case 'avchd':
+        case 'slv':
+        case 'fwf':
+        case 'mpg':
+        case 'mp4':
+            header('Content-Type: video/'.$type);
+            break;
+
+        default :
+            return false;
+            break;
+    }
+
+    return true;
 }

@@ -12,6 +12,7 @@ $routes = [
     'remove'     => 'file',
     'add_folder' => 'file',
     'move'       => 'file',
+    'show'       => 'file',
     'open'       => 'nav',
     'to_parent'  => 'nav',
 ];

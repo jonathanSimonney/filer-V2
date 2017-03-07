@@ -3,6 +3,7 @@
 ?>
     <br><br>
     <a href= "?action=download&fileId=<?php echo $value['id'] ?>"  class="download clickable"><i class="fa fa-arrow-down" aria-hidden="true"></i></a>
+    <a href="#" class="show download clickable"><i class="fa fa-search" aria-hidden="true"></i></a>
     <button class="replace clickable">replace</button>
     <button class="rename clickable">rename</button>
     <i class="fa fa-trash delete clickable" aria-hidden="true"></i>

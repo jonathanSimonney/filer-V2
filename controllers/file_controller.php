@@ -104,6 +104,45 @@ function move_action(){
 
     header('Location: ?action=home');
     exit();
+    //TODO check if destination does not have a file of same name.
 }
 
-//todo allow movement to precedent folder.
+function show_action(){
+    $fileData = get_file_data($_GET['id']);
+    http_response_code(400);
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST'){
+        if (user_can_access($fileData)){
+            if ($fileData['type'] !== ''){
+                http_response_code(200);
+
+                $ret = json_encode([
+                    'path'  => '?action=show&id='.$_GET['id'],
+                    'type'  => $fileData['type']
+                ]);
+                if ($ret === false){
+                    echo json_last_error_msg();
+                }else{
+                    echo $ret;
+                }
+            }else{
+                //user tried to access one of his folder instead of files
+            }
+        }
+    }else{
+        if (user_can_access($fileData)){
+            if ($fileData['type'] !== ''){
+                $path = get_real_path_to_file($fileData);
+                http_response_code(200);
+                setCorrectHeader($fileData['type']);
+                readfile($path);
+
+            }else{
+                //user tried to access one of his folder instead of files
+            }
+        }else{
+            setCorrectHeader('jpg');
+            readfile('assets/images/trash_picture.jpg');
+        }
+    }
+}

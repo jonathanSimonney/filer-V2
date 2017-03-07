@@ -1,5 +1,5 @@
 function moveAIntoB(idA, idB) {
-    window.location = '?action=move&idMovedElement='+idA+'&idDestination='+idB;
+    window.location = '?action=move&idMovedElement='+idA+'&idDestination='+idB;//todo make it in ajax.
 }
 
 function addClassName(element, className) {

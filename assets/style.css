@@ -198,3 +198,34 @@ body>*:nth-child(2){
 .precedent.dragover{
     color:white;
 }
+
+.fullScreen{
+    background-color: rgba(224, 230, 227, 0.9);
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    border: none;
+    border: 1px solid #891214;
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.closeButton {
+    color: black;
+    font-size: 40px;
+    cursor: pointer;
+    position: absolute;
+    font-family: 'X-font';
+    top: 0;
+    right: 0;
+    padding: 10px 10px 0 0;
+}
+
+.closeButton:hover {
+    color: silver;
+}
