@@ -200,7 +200,7 @@ function is_upload_possible($file, $fileInformations){
 
 function upload_file_in_folder($file, $path){
     if (!move_uploaded_file($file['tmp_name'], $path)){
-        $_SESSION['errorMessage'] = "your file wasn't uploaded. Please check it is not too big (max upload size is of 4MB).";
+        $_SESSION['errorMessage'] = "your file wasn't uploaded. Please check it is not too big (max upload size is of 8MB).";
         return false;
     }else{
         return true;

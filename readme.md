@@ -10,6 +10,6 @@ You'll need to create your own private.php file, and within it,
 PS : (Don't forget the <?php at the beginning of this private.php file, obviously...)
 <br>This file should be put in the config folder. 
 
-TODO : change my trash picture.
+TODO : 
 avoid access to forbidden files via /.. (url rewrite???)\
 add a go to root button (easier navigation...)

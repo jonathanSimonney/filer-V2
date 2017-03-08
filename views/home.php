@@ -15,8 +15,8 @@
                 <div class="centeredChild">
                     <input type="file" name="file">
                     <br>
-                    <label for="name">name : </label>
-                    <input id="name" type="text" name="name" placeholder="type here the name of your file"><br>
+                    <label for="fileName">name : </label>
+                    <input id="fileName" type="text" name="name" placeholder="type here the name of your file"><br>
                     <input type="submit" id="uploadFile">
                 </div>
             </form>
@@ -25,8 +25,8 @@
                 <div class="centeredChild">
                     <!--<input type="file" name="file" webkitdirectory directory multiple>
                     <br> POSSIBLY USEFUL IF IMPLEMENT A DIRECT UPLOAD OF FOLDER.-->
-                    <label for="name">name : </label>
-                    <input id="name" type="text" name="name" placeholder="type here the name of your folder"><br>
+                    <label for="folderName">name : </label>
+                    <input id="folderName" type="text" name="name" placeholder="type here the name of your folder"><br>
                     <input type="submit" id="addFolder">
                 </div>
             </form>
@@ -36,7 +36,7 @@
             <p id="message" class="message red">
                 <?php echo $_SESSION['errorMessage'] ?>
             </p>
-        </div class="creationSpace">
+        </div>
 
         <script src="assets/JS/dragAndDropHandler.js"></script>
         <script src="assets/JS/files.js"></script>

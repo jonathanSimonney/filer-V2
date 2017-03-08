@@ -162,8 +162,7 @@ function show_action(){
                 writeToLog(generateAccessMessage('tried to access his folder '.$fileData['name'].' of id '.$fileData['id']), 'security');
             }
         }else{
-            setCorrectHeader('jpg');
-            readfile('assets/images/trash_picture.jpg');
+            writeToLog(generateAccessMessage('tried to access file '.get_name_with_extent($fileData).' of id '.$fileData['id'].' belonging to user number '.$fileData['user_id']), 'security');
         }
     }
 }
@@ -175,7 +174,7 @@ function write_action(){
         //var_dump($_GET['newContent']);
         file_put_contents(get_real_path_to_file($fileData), $_GET['newContent']);
         http_response_code(200);
-        writeToLog(generateAccessMessage('wrote into his folder '.$fileData['name'].' of id '.$fileData['id']), 'access');
+        writeToLog(generateAccessMessage('wrote into his file '.get_name_with_extent($fileData).' of id '.$fileData['id']), 'access');
         //echo file_get_contents(get_real_path_to_file($fileData));
     }
 }
