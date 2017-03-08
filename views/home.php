@@ -39,6 +39,7 @@
         </div>
 
         <script src="assets/JS/dragAndDropHandler.js"></script>
+        <script src="assets/JS/fileFunctions.js"></script>
         <script src="assets/JS/files.js"></script>
 
         <div class='centeringDiv blueBackground'><div class='listFilesUser'>
