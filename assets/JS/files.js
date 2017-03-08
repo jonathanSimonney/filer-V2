@@ -49,10 +49,15 @@ function addCloseButton(elementToAppend){
     return button;
 }
 
-function asynchronousTreatment(path, successFunction, failureFunction){
+function asynchronousTreatment(path, successFunction, failureFunction, method){
     var request = new XMLHttpRequest();
-    request.open("POST", path, true);
-    request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    if (method === "POST"){
+        request.open("POST", path, true);
+        request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    }else{
+        request.open("GET", path, true);
+    }
+
     request.onload = function(e) {
         //document.write(request.responseText);
         if (request.status === 200){
@@ -84,9 +89,12 @@ function getDivInModale(fileData){
     switch (fileData['type']){
         case 'txt' :
             var innerText = document.createElement('p');
-            innerText.innerText = asynchronousTreatment(fileData['path'], function(request){
-
-            });
+            asynchronousTreatment(fileData['path'], function (request) {
+                //document.write(request.responseText);
+                innerText.innerText =  request.responseText;
+            }, function (request){
+                innerText.innerText = 'An error '+request.status+ ' occurred.';
+            }, "GET");
             //add button to allow modification.
             return innerText;
             break;
@@ -147,7 +155,7 @@ function getDivInModale(fileData){
 
         default :
             var div = document.createElement('div');
-            div.innerHTML = 'This type can\'t be displayed';
+            div.innerHTML = 'This type can\'t be displayed. Please send a mail at jonathan.simonney@supinternet for possible implementation.';
             return div;
     }
 }
@@ -171,7 +179,7 @@ function showInFullScreen(elementToShow){
         document.body.appendChild(fullScreenDiv);
     }, function (request) {
         console.log(request.status);
-    });
+    }, 'POST');
 }
 
 window.onload = function(){
