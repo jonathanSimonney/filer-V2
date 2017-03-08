@@ -97,6 +97,8 @@ function writeInFile(id, newContent){
 function allowModif(textField, button){
     button.innerHTML = 'save modifications';
     textField.childNodes[0].contentEditable = true;
+    textField.childNodes[0].focus();
+    addClassName(textField, 'changeAllowed');
     button.onclick = function () {
         console.log(textField.childNodes[0].innerText);
         writeInFile(openedFileId, textField.childNodes[0].innerText);

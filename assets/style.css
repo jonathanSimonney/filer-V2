@@ -217,6 +217,7 @@ body>*:nth-child(2){
 
 .fullScreen>div{
     height: 90vh;
+    width:70vw;
     border: 2px #5e4126 dotted;
     display: flex;
     flex-direction: column;
@@ -226,6 +227,17 @@ body>*:nth-child(2){
 .fullScreen>div>p{
     overflow:auto;
     height:80vh;
+    background-color: #fff;
+}
+
+.fullScreen>div>p>pre{
+    width:99%;
+    height:99%;
+    margin:auto;
+}
+
+.changeAllowed>pre{
+    border:1px solid #5679ff;
 }
 
 .closeButton {
