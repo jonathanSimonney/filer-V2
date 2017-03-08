@@ -1,11 +1,13 @@
 <?php
 
-require_once('model/user.php');
+require_once 'model/user.php';
+require_once 'model/log.php';
 
 function login_action(){
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (user_check_login($_POST)) {
             user_login($_POST['username']);
+            writeToLog(generateAccessMessage('connected himself'), 'access');
         }else{
             $jsonValue = $_SESSION['errorMessage'];
             require('views/inc/json.php');
@@ -35,6 +37,7 @@ function register_action(){
         $arrayReturned = user_check_register($_POST);
         if ($arrayReturned['formOk']){
             user_register($_POST, ['username', 'email', 'password', 'indic']);
+            writeToLog(generateAccessMessage('created an account as '.$_POST['username']), 'access');
         }
         $jsonValue = $arrayReturned;
         require('views/inc/json.php');

@@ -68,6 +68,7 @@ function user_check_login($data){
         return true;
     }
     $_SESSION['errorMessage'] = 'Sorry, but your password does not correspond to your username. Try to take into account the following : '.htmlspecialchars($user['indic']);
+    writeToLog(generateAccessMessage('tried to connect as '.$data['username']), 'security');
     return false;
 }
 

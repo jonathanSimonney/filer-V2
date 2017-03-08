@@ -1,7 +1,13 @@
 <?php
 
 function generateAccessMessage($action){
-    return 'User '.$_SESSION['currentUser']['data']['username'].$action.' at '.date('r');
+
+    if (!empty($_SESSION['currentUser']['data']['username'])){
+        $begin = 'User '.$_SESSION['currentUser']['data']['username'];
+    }else{
+        $begin = 'Unknown user';
+    }
+    return $begin.' '.$action.' at '.date('r');
 }
 
 function writeToLog($newMessage, $file){
@@ -10,7 +16,7 @@ function writeToLog($newMessage, $file){
     }else{
         $file = fopen('logs/security.log', 'ab');
     }
-    fwrite($file, $newMessage.'\n');
+    fwrite($file, $newMessage."\n");
 
     fclose($file);
 }

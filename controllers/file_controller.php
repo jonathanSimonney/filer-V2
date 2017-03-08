@@ -85,9 +85,9 @@ function add_folder_action(){
     if (is_name_ok($folderInformations)) {
         //var_dump($folderInformations);
         add_folder($folderInformations);
-        writeToLog(generateAccessMessage('created folder '.$folderInformations['name'].', of id '.$folderInformations['id']), 'access');
+        writeToLog(generateAccessMessage('created folder '.$folderInformations['name'].', of id '.get_last_inserted_id()), 'access');
     }else{
-        writeToLog(generateAccessMessage('tried to add a folder of name'.$folderInformations['name']), 'security');
+        writeToLog(generateAccessMessage('tried to add a folder of name'.$folderInformations['name']), 'access');
     }
 
     header('Location: ?action=home');
@@ -119,7 +119,7 @@ function move_action(){
         db_update('files', $movedElementData['id'],['path' => $newPath]);
         move_in_session($movedElementData, $destinationFolderData, $newPath, $toParent);
         move_on_server($movedElementData, $destinationFolderData, $toParent);
-        //writeToLog(generateAccessMessage('moved file or folder '.get_name_with_extent($movedElementData['name']).' of id '.$movedElementData['id'].' into folder '.), 'access');
+        writeToLog(generateAccessMessage('moved file or folder '.get_name_with_extent($movedElementData).' of id '.$movedElementData['id'].' into folder '.$destinationFolderData['name'].' of id '.$destinationFolderData['id']), 'access');
     }
 
 
@@ -147,7 +147,7 @@ function show_action(){
                     echo $ret;
                 }
             }else{
-                //user tried to access one of his folder instead of files
+                writeToLog(generateAccessMessage('tried to access his folder '.$fileData['name'].' of id '.$fileData['id']), 'security');
             }
         }
     }else{
@@ -157,9 +157,9 @@ function show_action(){
                 http_response_code(200);
                 setCorrectHeader($fileData['type']);
                 readfile($path);
-
+                writeToLog(generateAccessMessage('saw his file '.get_name_with_extent($fileData).' of id '.$fileData['id']), 'access');
             }else{
-                //user tried to access one of his folder instead of files
+                writeToLog(generateAccessMessage('tried to access his folder '.$fileData['name'].' of id '.$fileData['id']), 'security');
             }
         }else{
             setCorrectHeader('jpg');
@@ -175,6 +175,7 @@ function write_action(){
         //var_dump($_GET['newContent']);
         file_put_contents(get_real_path_to_file($fileData), $_GET['newContent']);
         http_response_code(200);
+        writeToLog(generateAccessMessage('wrote into his folder '.$fileData['name'].' of id '.$fileData['id']), 'access');
         //echo file_get_contents(get_real_path_to_file($fileData));
     }
 }

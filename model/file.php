@@ -12,12 +12,10 @@ function get_file_data($fileId){
             return $_SESSION['location']['files'][$fileId];
         }else{
             //var_dump($fileId, $_SESSION['location']['files']);
-            return [
-                'user_id' => 0
-            ];//since this key shan't be displayed...
+            return get_what_how($fileId, 'id', 'files')[0];
         }
     }else{
-        return 'root';
+        return ['name' => 'root', 'id' => 'root'];
     }
 }
 
