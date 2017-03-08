@@ -26,6 +26,7 @@ function login_action(){
 }
 
 function logout_action(){
+    writeToLog(generateAccessMessage('deconnected himself'), 'access');
     session_destroy();
     header('Location: ?action=login');
     exit(0);
