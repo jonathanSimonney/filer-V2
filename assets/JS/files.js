@@ -18,6 +18,7 @@ function createElementWithClass(tagName,arrayClassname){
 
 function linkButtonOnclickEvent(button){
     button.domElement.onclick = function(){
+        openedFileId = 0;
         button.domElement.parentNode.parentNode.removeChild(button.domElement.parentNode);
     };
 }
@@ -85,18 +86,52 @@ function toggleFormState(form){
     }
 }
 
+function writeInFile(id, newContent){
+    asynchronousTreatment('?action=write&id='+id+'&newContent='+encodeURIComponent(newContent), function (request) {
+        //document.write(request.responseText);
+    }, function (request) {
+        //document.write(request.responseText);
+    });
+}
+
+function allowModif(textField, button){
+    button.innerHTML = 'save modifications';
+    textField.childNodes[0].contentEditable = true;
+    button.onclick = function () {
+        console.log(textField.childNodes[0].innerText);
+        writeInFile(openedFileId, textField.childNodes[0].innerText);
+    }
+}
+
+function getTextDiv(path){
+    var ret = document.createElement('div');
+    var innerText = document.createElement('p');
+    asynchronousTreatment(path, function (request) {
+        //document.write(request.responseText);
+        var result = request.responseText;
+        result = result.replace(/&/g, '&amp;');
+        result = result.replace(/</g, '&lt;');
+        innerText.innerHTML =  '<pre>'+result+'</pre>';
+    }, function (request){
+        innerText.innerText = 'An error '+request.status+ ' occurred.';
+    }, "GET");
+
+    var buttonModif = document.createElement('button');
+    buttonModif.innerHTML = 'allow change';
+
+    ret.appendChild(innerText);
+    ret.appendChild(buttonModif);
+
+    buttonModif.onclick = function(){
+        allowModif(innerText, buttonModif);
+    };
+    return ret;
+}
+
 function getDivInModale(fileData){
     switch (fileData['type']){
         case 'txt' :
-            var innerText = document.createElement('p');
-            asynchronousTreatment(fileData['path'], function (request) {
-                //document.write(request.responseText);
-                innerText.innerText =  request.responseText;
-            }, function (request){
-                innerText.innerText = 'An error '+request.status+ ' occurred.';
-            }, "GET");
-            //add button to allow modification.
-            return innerText;
+            return getTextDiv(fileData['path']);
             break;
         case 'jpg' :
         case 'jpeg':
@@ -164,13 +199,13 @@ function showInFullScreen(elementToShow){
     for (var i in elementToShow.childNodes){
         if (elementToShow.childNodes[i].className !== undefined){
             if (elementToShow.childNodes[i].hasClassName('name')){
-                var name = elementToShow.childNodes[i];
+                openedFileId = getId(elementToShow.childNodes[i]);
                 break;
             }
         }
     }
 
-    asynchronousTreatment('?action=show&id='+getId(name), function(request){
+    asynchronousTreatment('?action=show&id='+openedFileId, function(request){
         var fileData = JSON.parse(request.responseText);
         var fullScreenDiv = createElementWithClass('div', ['fullScreen']);
         addCloseButton(fullScreenDiv);
@@ -181,6 +216,9 @@ function showInFullScreen(elementToShow){
         console.log(request.status);
     }, 'POST');
 }
+
+var openedFileId = 0;
+//todo put functions in another js file included before this one.
 
 window.onload = function(){
     var buttonReplace = document.querySelectorAll('.replace');

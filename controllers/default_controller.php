@@ -16,13 +16,14 @@ function home_action(){
         $link = '<a href="?action=to_parent" class="precedent clickable"><i class="fa fa-arrow-left" aria-hidden="true"></i></a> <a href="?action=logout"><i class="fa fa-power-off" aria-hidden="true"></i>log&nbsp;out</a>';
     }
     require('views/home.php');
-    //var_dump($arrayFiles, $_SESSION['location'], $_SESSION['files']);
+    //var_dump($arrayElements, $_SESSION['location'], $_SESSION['files']);
     if ($arrayElements !== null){
         $numberForId = 0;
 
         $arrayElements = order_between_files_and_folder($arrayElements);
 
         foreach ($arrayElements as $key => $value){
+            //var_dump(get_real_path_to_file($value));
             $numberForId++;
             if ($value['type'] === ''){
                 require 'views/inc/folder.php';

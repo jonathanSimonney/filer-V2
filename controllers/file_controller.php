@@ -146,3 +146,14 @@ function show_action(){
         }
     }
 }
+
+function write_action(){
+    $fileData = get_file_data($_GET['id']);
+    http_response_code(400);
+    if (user_can_access($fileData)){
+        //var_dump($_GET['newContent']);
+        file_put_contents(get_real_path_to_file($fileData), $_GET['newContent']);
+        http_response_code(200);
+        //echo file_get_contents(get_real_path_to_file($fileData));
+    }
+}

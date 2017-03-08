@@ -74,9 +74,12 @@ function user_check_login($data){
 function user_login($username){
     $data = get_user_by_username($username);
     $_SESSION['currentUser']['data'] = $data;
+    //var_dump($_SESSION['files']);
     $_SESSION['files'] = get_what_how($_SESSION['currentUser']['data']['id'],'user_id','files');
     $_SESSION['files'] = make_inferior_key_index($_SESSION['files'], 'id');
+    //var_dump($_SESSION['files']);
     format_session_file_as_tree();
+    //var_dump($_SESSION['files']);
     $_SESSION['currentUser']['loggedIn'] = true;
     user_session_location_init();
 }

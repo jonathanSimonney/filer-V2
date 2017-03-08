@@ -29,7 +29,6 @@ function logout_action(){
     exit(0);
 }
 
-
 function register_action(){
     $error = '';
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {

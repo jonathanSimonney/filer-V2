@@ -16,11 +16,6 @@ avoid access to forbidden files via /.. (url rewrite???)\
 add a go to root button (easier navigation...)
 
 
-<b>Perso : planning : </b><br>
-Lundi : finir ajout de fichiers en db.DONE<br>
-Mardi : finir affichage des fichiers et gestion des fichiers.DONE<br>
-Mercredi : Système de dossier.DONE<br>
-Jeudi : visualisation + modification de dossier almost done<br>
-Vendredi : Fichiers de log.<br>
-et jours suivants : Si retard à rattrapper + refactoriser, vérifier, 
-ajouter bonus etc.
+!<b>important<b>!!!
+
+check for move action to parent. Bug telling user tries to access a forbidden file.

@@ -12,6 +12,7 @@ a{
     flex-direction: row;
     width: 40vw;
     justify-content: space-between;
+    z-index:50;
 }
 
 a:not(.download){
@@ -43,6 +44,7 @@ form input{
 
 .toHide{
     opacity: 0;
+    z-index:-1;
     display: none;
 }
 
@@ -112,7 +114,6 @@ body{
 .creationButtons{
     height:4vh;
     display: flex;
-    width:100vw;
     flex-direction:row;
     justify-content:space-around;
 }
@@ -161,6 +162,7 @@ body{
     animation-name: appearingSlowly;
     animation-duration: 1s;
     opacity: 1;
+    z-index:1;
     display: block;
 }
 
@@ -213,10 +215,17 @@ body>*:nth-child(2){
     justify-content: center;
 }
 
-.fullScreen>p{
+.fullScreen>div{
     height: 90vh;
     border: 2px #5e4126 dotted;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.fullScreen>div>p{
     overflow:auto;
+    height:80vh;
 }
 
 .closeButton {
@@ -228,6 +237,10 @@ body>*:nth-child(2){
     top: 0;
     right: 0;
     padding: 10px 10px 0 0;
+}
+
+.fa-folder{
+    color: #dcdc00;
 }
 
 .closeButton:hover {

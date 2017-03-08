@@ -88,7 +88,6 @@ function updatePath($idParent, $suppressedArray, $key, $path){
 }
 
 function format_session_file_as_tree(){
-    $suppressedArray = [];
     $arrayAsTree = [];
     $suppressedArray = [];
     foreach ($_SESSION['files'] as $key => $value){
@@ -101,9 +100,18 @@ function format_session_file_as_tree(){
 
         if (get_item_in_array($path, $arrayAsTree) !== null){
             $value = array_merge(get_item_in_array($path, $arrayAsTree), $value);
+            unset_item_in_array($path, $arrayAsTree);
+        }
+
+        $precedentValue = get_item_in_array([$value['id']], $arrayAsTree);
+
+        if ($precedentValue !== null){
+            $value = array_merge(get_item_in_array([$value['id']], $arrayAsTree), $value);
+            unset_item_in_array([$value['id']], $arrayAsTree);
         }
 
         set_item_in_array($path, $arrayAsTree, $value);
+        //var_dump($arrayAsTree, $value, $path, get_item_in_array($path, $arrayAsTree));
     }
 
     $_SESSION['files'] = $arrayAsTree;
