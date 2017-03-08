@@ -11,9 +11,11 @@ function get_file_data($fileId){
         if (array_key_exists($fileId, $_SESSION['location']['files'])){
             return $_SESSION['location']['files'][$fileId];
         }else{
-            return ['user_id' => 0];//since this key shan't be displayed...
+            //var_dump($fileId, $_SESSION['location']['files']);
+            return [
+                'user_id' => 0
+            ];//since this key shan't be displayed...
         }
-
     }else{
         return 'root';
     }
@@ -279,6 +281,7 @@ function move_on_server($movedElementData, $destinationFolderData, $toParent = f
 
     $currentPath = get_real_path_to_file($movedElementData);
     if ($toParent){
+        close_current_folder();
         close_current_folder();
     }
 
