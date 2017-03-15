@@ -8,10 +8,11 @@ if (!array_key_exists('errorMessage', $_SESSION)){
 require('config/config.php');
 
 if (empty($_GET['action'])){
-    $action = 'home';
-}else{
-    $action = $_GET['action'];
+    $_GET['action'] = 'home';
 }
+
+$action = $_GET['action'];
+
 
 if (isset($routes[$action])){
     require('controllers/'.$routes[$action].'_controller.php');

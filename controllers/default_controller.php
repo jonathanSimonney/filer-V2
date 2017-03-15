@@ -14,7 +14,7 @@ function home_action(){
         $link = '<p> </p><a href="?action=logout"><i class="fa fa-power-off" aria-hidden="true"></i>log&nbsp;out</a>';
     }else{
         $link = '<a href="?action=to_parent" class="precedent clickable"><i class="fa fa-arrow-left" aria-hidden="true"></i></a> <a href="?action=logout"><i class="fa fa-power-off" aria-hidden="true"></i>log&nbsp;out</a>';
-    }
+    }//todo put boolean and test in view. (NO HTML IN CONTROLLER)
     require('views/home.php');
     //var_dump($arrayElements, $_SESSION['location'], $_SESSION['files']);
     if ($arrayElements !== null){

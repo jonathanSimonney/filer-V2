@@ -15,7 +15,7 @@ function get_file_data($fileId){
             return get_what_how($fileId, 'id', 'files')[0];
         }
     }else{
-        return ['name' => 'root', 'id' => 'root'];
+        return ['name' => 'root', 'id' => 'root', 'path' => 'uploads/'.$_SESSION['currentUser']['data']['id']];
     }
 }
 
@@ -256,7 +256,7 @@ function add_folder($folderInformations){
 }
 
 function generate_new_path($movedElementData, $destinationData){
-    if ($destinationData === 'root'){
+    if ($destinationData['id'] === 'root'){
         $beginning = 'uploads/'.$_SESSION['currentUser']['data']['id'];
     }else{
         $beginning = $destinationData['id'];
