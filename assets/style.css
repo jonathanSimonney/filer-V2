@@ -43,9 +43,9 @@ form input{
 }
 
 .toHide{
-    opacity: 0;
+    height:0;
+    opacity:0;
     z-index:-1;
-    display: none;
 }
 
 body{
@@ -153,9 +153,10 @@ body{
 
 /*TODO : change animation (also in js to change name)*/
 @keyframes appearingSlowly{
-    0%{opacity: 0;
+    0%{height: 0;
         display: block;}
-    100%{opacity: 1;}
+    100%{opacity: 1;
+        height:100%;}
 }
 
 .appearingSlowly{

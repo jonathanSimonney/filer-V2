@@ -1,4 +1,5 @@
 <?php
+use Router\Router;
 
 session_start();
 if (!array_key_exists('errorMessage', $_SESSION)){
@@ -6,6 +7,7 @@ if (!array_key_exists('errorMessage', $_SESSION)){
 }
 
 require('config/config.php');
+require ('config/autoload.php');
 
 if (empty($_GET['action'])){
     $_GET['action'] = 'home';
@@ -14,9 +16,5 @@ if (empty($_GET['action'])){
 $action = $_GET['action'];
 
 
-if (isset($routes[$action])){
-    require('controllers/'.$routes[$action].'_controller.php');
-    call_user_func($action.'_action');
-}else{
-    die('Illegal route');
-}
+$router = new Router($routes);
+$router ->callAction($action);

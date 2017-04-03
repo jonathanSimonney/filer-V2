@@ -1,11 +1,14 @@
 <?php
+namespace controllers;
 
 require_once 'model/db.php';
 require_once 'model/user.php';
 require_once 'model/security.php';
 require_once 'model/session.php';
 
-function home_action(){
+class defaultController
+{
+    public function homeAction(){
     is_logged_in();
     $_SESSION['location']['files'] = get_item_in_array($_SESSION['location']['array'],$_SESSION);
     $arrayElements = $_SESSION['location']['files'];
@@ -37,5 +40,6 @@ function home_action(){
         }
         require 'views/inc/fileEnd.html';
     }
-    $_SESSION['errorMessage'] = '';
+        $_SESSION['errorMessage'] = '';
+    }
 }
